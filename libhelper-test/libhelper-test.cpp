@@ -1,4 +1,4 @@
-#include "stdafx.h"
+
 #include "overflow.h"
 #include "kmp.h"
 #include "aho-corasick.h"

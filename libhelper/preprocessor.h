@@ -13,8 +13,8 @@
 * -*- coding: utf-8 -*-
 *------------------------------------------------------------------------
 */
-#ifndef 8C9E86E0AFB24D149A77C00CFB7ADFB2__
-#define 8C9E86E0AFB24D149A77C00CFB7ADFB2__
+#ifndef preprocessor_8C9E86E0AFB24D149A77C00CFB7ADFB2
+#define preprocessor_8C9E86E0AFB24D149A77C00CFB7ADFB2
 
 /**
 * A preprocessor macro tying resource management to the scope of a variable for FILE
@@ -57,4 +57,4 @@
     } \
 } while(0)
 
-#endif // 8C9E86E0AFB24D149A77C00CFB7ADFB2__
+#endif // preprocessor_8C9E86E0AFB24D149A77C00CFB7ADFB2
