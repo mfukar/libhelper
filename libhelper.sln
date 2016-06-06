@@ -3,9 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 14
 VisualStudioVersion = 14.0.25123.0
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "clib", "clib\clib.vcxproj", "{83932E76-BFB8-4C66-8F38-16684EE51997}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "libhelper", "libhelper\libhelper.vcxproj", "{83932E76-BFB8-4C66-8F38-16684EE51997}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "clib-test", "clib-test\clib-test.vcxproj", "{592F3880-1A3E-415B-BF65-0CA4A63DEB61}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "libhelper-test", "libhelper-test\libhelper-test.vcxproj", "{592F3880-1A3E-415B-BF65-0CA4A63DEB61}"
 	ProjectSection(ProjectDependencies) = postProject
 		{83932E76-BFB8-4C66-8F38-16684EE51997} = {83932E76-BFB8-4C66-8F38-16684EE51997}
 	EndProjectSection

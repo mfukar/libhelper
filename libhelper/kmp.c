@@ -1,9 +1,9 @@
 /**
-* @file        /Users/mfukar/src/clib/src/kmp.c
+* @file        /libhelper/src/kmp.c
 * @author      Michael Foukarakis
 * @version     <+version+>
 * @date        Created:     Mon Mar 03, 2014 09:15 GMT
-*              Last Update: Mon Mar 03, 2014 09:18 GMT
+*              Last Update: Mon Jun 06, 2016 12:12 GTBDT
 *------------------------------------------------------------------------
 * Description: <+description+>
 *------------------------------------------------------------------------

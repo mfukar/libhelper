@@ -1,32 +1,35 @@
 ========================================================================
-    STATIC LIBRARY : clib Project Overview
+    CONSOLE APPLICATION : libhelper-test Project Overview
 ========================================================================
 
-AppWizard has created this clib library project for you.
+AppWizard has created this libhelper-test application for you.
 
 This file contains a summary of what you will find in each of the files that
-make up your clib application.
+make up your libhelper-test application.
 
 
-clib.vcxproj
+libhelper-test.vcxproj
     This is the main project file for VC++ projects generated using an Application Wizard.
     It contains information about the version of Visual C++ that generated the file, and
     information about the platforms, configurations, and project features selected with the
     Application Wizard.
 
-clib.vcxproj.filters
-    This is the filters file for VC++ projects generated using an Application Wizard. 
-    It contains information about the association between the files in your project 
+libhelper-test.vcxproj.filters
+    This is the filters file for VC++ projects generated using an Application Wizard.
+    It contains information about the association between the files in your project
     and the filters. This association is used in the IDE to show grouping of files with
     similar extensions under a specific node (for e.g. ".cpp" files are associated with the
     "Source Files" filter).
 
+libhelper-test.cpp
+    This is the main application source file.
 
 /////////////////////////////////////////////////////////////////////////////
+Other standard files:
 
 StdAfx.h, StdAfx.cpp
     These files are used to build a precompiled header (PCH) file
-    named clib.pch and a precompiled types file named StdAfx.obj.
+    named libhelper-test.pch and a precompiled types file named StdAfx.obj.
 
 /////////////////////////////////////////////////////////////////////////////
 Other notes:

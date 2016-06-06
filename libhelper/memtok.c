@@ -1,9 +1,9 @@
 /**
-* @file        /Users/mfukar/src/clib/src/memtok.c
+* @file        /libhelper/src/memtok.c
 * @author      Michael Foukarakis
 * @version     <+version+>
 * @date        Created:     Oct 24, 2011 12:41 EEST
-*              Last Update: Fri Oct 24, 2014 12:51 SAST
+*              Last Update: Mon Jun 06, 2016 12:13 GTBDT
 *------------------------------------------------------------------------
 * Description: <+description+>
 *------------------------------------------------------------------------

@@ -29,7 +29,7 @@
     <ClCompile Include="stdafx.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="clib-test.cpp">
+    <ClCompile Include="libhelper-test.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
