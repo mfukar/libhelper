@@ -54,11 +54,11 @@
     <ClInclude Include="assertions.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="rbtree.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="stdafx.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="kmp.c">
       <Filter>Source Files</Filter>
     </ClCompile>
