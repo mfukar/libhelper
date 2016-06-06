@@ -1,5 +1,3 @@
-#include <assert.h>
-
 #include "stdafx.h"
 #include "overflow.h"
 #include "kmp.h"
