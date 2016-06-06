@@ -171,6 +171,7 @@ ac_result ac_search (struct ac_trie *trie, char *text, size_t ntext, size_t offs
 ac_result ac_search_longest (struct ac_trie *trie, char *text, size_t ntext, size_t offset) {
 	ac_result result = (ac_result) { .start = -1, .end = -1 };
 
+	/* TODO */
 	struct ac_state *state = trie->root;
 	for (size_t i = 0 + offset; i < ntext; ++i) {
 		while (ac_next (state, text[i]) == NULL) {
