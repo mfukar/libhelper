@@ -32,10 +32,10 @@ bytes_t memtok (const void *s, size_t length, const char *delim, bytes_t *save_p
 	while (save_ptr->length--) {
 		if (memchr (delim, *stream, strlen (delim))) {
 			/*
-			* Point save_ptr past the (non-existent) token.
-			* This is OK as long as we do not dereference one-past whatever buffer we are
-			* passed, and we never will if the caller does not mess with save_ptr.
-			*/
+			 * Point save_ptr past the (non-existent) token.
+			 * This is OK as long as we do not dereference one-past whatever buffer we are
+			 * passed, and we never will if the caller does not mess with save_ptr.
+			 */
 			save_ptr->data = stream + 1;
 			return (bytes_t) { .data = token, .length = len };
 		}

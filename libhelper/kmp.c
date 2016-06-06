@@ -16,7 +16,8 @@
 #include <string.h>
 #include "kmp.h"
 
-size_t kmp (const char *haystack, size_t hlen, const char *needle, size_t nlen, size_t *ff) {
+size_t kmp (const char *haystack, size_t hlen,
+            const char *needle, size_t nlen, size_t *ff) {
 	if (!hlen || !nlen) {
 		return -1;
 	}
