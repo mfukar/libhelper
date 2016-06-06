@@ -13,19 +13,16 @@
 * -*- coding: utf-8 -*-
 *------------------------------------------------------------------------
 */
+#include <string.h>
 #include "kmp.h"
 
-int kmp (const char *haystack, const char *needle, int *ff) {
-	int hlen = strlen (haystack);
-	int nlen = strlen (needle);
-
+size_t kmp (const char *haystack, size_t hlen, const char *needle, size_t nlen, size_t *ff) {
 	if (!hlen || !nlen) {
 		return -1;
 	}
 
-	int m = 0, i = 0;
+	size_t m = 0, i = 0;
 
-	/* FIXME The fastpath is slow: */
 	while (m + i < hlen) {
 		if (needle[i] == haystack[m + i]) {
 			if (i == nlen - 1) {
@@ -46,7 +43,7 @@ int kmp (const char *haystack, const char *needle, int *ff) {
 	return -1;
 }
 
-void kmp_ff (const char *needle, int *ff, size_t nff) {
+void kmp_ff (const char *needle, size_t *ff, size_t nff) {
 	if (nff > 1) {
 		ff[0] = -1;
 		ff[1] = 0;

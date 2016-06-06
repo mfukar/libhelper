@@ -21,11 +21,11 @@
 /**
 * @brief
 */
-int kmp (const char *haystack, const char *needle, int *ff);
+size_t kmp (const char *haystack, size_t hlen, const char *needle, size_t nlen, size_t *ff);
 
 /**
 *
 */
-void kmp_ff (const char *needle, int *ff, size_t nff);
+void kmp_ff (const char *needle, size_t *ff, size_t nff);
 
 #endif // kmp_37B632A1D8A24097B7E85FAB69FFEFE7__

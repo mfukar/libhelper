@@ -1,4 +1,3 @@
-
 #include "overflow.h"
 #include "kmp.h"
 #include "aho-corasick.h"
@@ -9,6 +8,7 @@ struct num {
 };
 
 int _tmain (int argc, TCHAR *argv[]) {
+
 	int32_t a = INT32_MIN, b = INT32_MIN;
 	int32_t c = 0;
 	assert (true == checked_add_32 (a, b, &c));
@@ -18,15 +18,15 @@ int _tmain (int argc, TCHAR *argv[]) {
 	const char test_success[] = "tempor";
 	const char test_fail[] = "participate in parachute";
 
-	int ff1[sizeof test_success] = {0};
+	size_t ff1[sizeof test_success] = {0};
 
 	kmp_ff (test_success, ff1, sizeof ff1 / sizeof *ff1);
-	assert (kmp (barn, test_success, ff1) == strstr(barn, test_success) - barn);
+	assert (kmp (barn, strlen(barn), test_success, strlen(test_success), ff1) == strstr(barn, test_success) - barn);
 
-	int ff2[sizeof test_fail] = {0};
+	size_t ff2[sizeof test_fail] = {0};
 
 	kmp_ff (test_fail, ff2, sizeof ff2 / sizeof *ff2);
-	assert (kmp (barn, test_fail, ff2) == -1);
+	assert (kmp (barn, strlen(barn), test_fail, strlen(test_fail), ff2) == -1);
 
 	/*======================*/
 	dequeue (q1);
@@ -55,5 +55,6 @@ int _tmain (int argc, TCHAR *argv[]) {
 	for (size_t i = res.start; i < res.end; ++i) {
 		printf ("%c", "head of hers, OK?"[i]);
 	}
+    puts ("\n");
 	return 0;
 }
