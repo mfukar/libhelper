@@ -46,15 +46,17 @@ int _tmain (int argc, TCHAR *argv[]) {
 	struct ac_trie trie;
 	ac_trie_init (&trie);
 	ac_trie_insert (&trie, "she");
+    ac_trie_insert (&trie, "tried");
 	ac_trie_insert (&trie, "hers");
 	ac_trie_insert (&trie, "he");
+    ac_trie_insert (&trie, "looking");
+    ac_trie_insert (&trie, "what");
 	ac_build_failure_function (&trie);
 	ac_result res = ac_search (&trie, "head of hers, OK?",
 							   sizeof "head of hers, OK?", 0);
-	printf ("%zu %zu %zu", res.id, res.start, res.end);
-	for (size_t i = res.start; i < res.end; ++i) {
-		printf ("%c", "head of hers, OK?"[i]);
-	}
-    puts ("\n");
+    assert (res.start == 0 && res.end == 2);
+    res = ac_search_longest (&trie, "head of hers, OK?",
+                             sizeof "head of hers, OK?", 0);
+    assert (res.start == 8 && res.end == 12);
 	return 0;
 }

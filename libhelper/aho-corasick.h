@@ -168,12 +168,14 @@ ac_result ac_search (struct ac_trie *trie, char *text, size_t ntext, size_t offs
 	return (ac_result) {.id = 0, .start = -1, .end = -1, .last_state = NULL };
 }
 
+/**
+ * Scans the entire buffer pointed to by text, and returns the longest match, if found:
+ */
 ac_result ac_search_longest (struct ac_trie *trie, char *text, size_t ntext, size_t offset) {
-	ac_result result = (ac_result) { .start = -1, .end = -1 };
+	ac_result result = (ac_result) { .start = -1, .end = -1, .last_state = NULL };
 
-	/* TODO */
 	struct ac_state *state = trie->root;
-	for (size_t i = 0 + offset; i < ntext; ++i) {
+	for (size_t i = offset; i < ntext; ++i) {
 		while (ac_next (state, text[i]) == NULL) {
 			state = ac_fail (state);
 		}
@@ -181,14 +183,16 @@ ac_result ac_search_longest (struct ac_trie *trie, char *text, size_t ntext, siz
 		state = ac_next (state, text[i]);
 
 		if (ac_output (state) != 0) {
-			return (ac_result) {
-				.id = state->id,
-					.start = i + 1 - ac_output (state),
-					.end = i + 1,
-					.last_state = state
-			};
+			result = (ac_result) { .id = state->id,
+					               .start = i + 1 - ac_output (state),
+                                   .end = i + 1,
+					               .last_state = state };
 		}
 	}
 
+    /* If we've recorded a match, return it: */
+    if (result.last_state) {
+        return result;
+    }
 	return (ac_result) { .id = 0, .start = -1, .end = -1, .last_state = NULL };
 }
