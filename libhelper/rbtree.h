@@ -2,6 +2,7 @@
 #define rbtree_FCF1F854_7F36_47ED_9A40_902D4D7BAB54
 
 #include <stdbool.h>
+#include <stdint.h>
 
 struct rb_node {
 	struct rb_node *parent;
@@ -40,17 +41,18 @@ rotate_single(struct rb_node *root, bool dir) {
 
 static inline struct rb_node *
 rotate_double (struct rb_node *root, bool dir) {
-    root->link[!dir] = rotate_single (root->link[!dir], !dir);
+    root->rb_link[!dir] = rotate_single (root->rb_link[!dir], !dir);
 
     return rotate_single (root, dir);
 }
 
-#ifndef NDEBUG
 /**
  * Check the invariants of a red-black tree.
  * Returns the black-height of the root node:
  */
-size_t rb_invariant (struct rb_node *root) {
+static inline size_t
+rb_invariant (struct rb_node *root) {
+#ifndef NDEBUG
     size_t leftheight, rightheight;
 
     if (!root) return 1;
@@ -79,9 +81,9 @@ size_t rb_invariant (struct rb_node *root) {
     if (lh != 0 && rh != 0) {
         return is_red (root) ? lh : lh + 1;
     }
-
+#endif
     return 0;
 }
-#endif
+
 
 #endif // rbtree_FCF1F854_7F36_47ED_9A40_902D4D7BAB54
