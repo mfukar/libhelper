@@ -93,5 +93,39 @@ rb_invariant (struct rb_node *root, int (*cmp)(void *lhs, void *rhs)) {
     return 0;
 }
 
+struct rb_node *rb_create_node (void *data) {
+    struct rb_node *node = malloc (sizeof *node);
+
+    if (!node) {
+        return NULL;
+    }
+
+    node->data = data;
+    node->red = true;
+    node->rb_link[0] = NULL;
+    node->rb_link[1] = NULL;
+
+    return node;
+}
+
+struct rb_node *rb_insert_node (struct rb_node *root, void *data, int (*cmp)(void *, void *)) {
+    if (!root) {
+        root = rb_create_node (data);
+    }
+
+    if (data != root->data) {
+        bool right = cmp (root->data, data) == -1;
+        root->rb_link[right] = rb_insert_node (root->rb_link[right], data, cmp);
+
+        /* TODO: rebalance */
+    }
+
+    return root;
+}
+
+void rb_insert (struct rb_tree *tree, void *data) {
+    tree->rb_node = rb_insert_node (tree->rb_node, data, tree->cmp);
+    tree->rb_node->red = false; /* The root node is always black. */
+}
 
 #endif // rbtree_FCF1F854_7F36_47ED_9A40_902D4D7BAB54
