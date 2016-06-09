@@ -6,12 +6,14 @@
 
 struct rb_node {
 	struct rb_node *parent;
-    struct rb_node *rb_link[2]; /** Exploit the symmetry here to make the code more concise. */
+    struct rb_node *rb_link[2]; /** Exploit the symmetry here to make the code more concise */
+    void *data; /** XXX How about an intrusive version instead? */
 	bool red;
 };
 
 struct rb_tree {
 	struct rb_node *rb_node;
+    int (*cmp)(void *, void *); /** Comparator establishing a partial order */
 };
 
 #define rb_parent(r)   ((struct rb_node *) (r)->parent)
@@ -49,11 +51,12 @@ rotate_double (struct rb_node *root, bool dir) {
 /**
  * Check the invariants of a red-black tree.
  * Returns the black-height of the root node:
+ * `cmp` returns -1 if lhs < rhs, 0 if lhs == rhs, 1 if lhs > rhs
  */
 static inline size_t
-rb_invariant (struct rb_node *root) {
+rb_invariant (struct rb_node *root, int (*cmp)(void *lhs, void *rhs)) {
 #ifndef NDEBUG
-    size_t leftheight, rightheight;
+    size_t height_left, height_right;
 
     if (!root) return 1;
 
@@ -62,14 +65,19 @@ rb_invariant (struct rb_node *root) {
 
     if (is_red (root)
     && (is_red (lh) || is_red (rh))) {
-            return 0;
+        return 0;
     }
 
-    leftheight  = rb_invariant (lh);
-    rightheight = rb_invariant (rh);
+    height_left  = rb_invariant (lh, cmp);
+    height_right = rb_invariant (rh, cmp);
 
-    if (lh /* && check the keys */
-    ||  rh /* && check the keys */) {
+    /* A red-black tree is a binary tree. Is this one?
+     * We must have:
+     *   - lh->data < root->data
+     *   - rh->data > root->data
+     */
+    if (lh && cmp (root->data, lh->data) !=  1
+    ||  rh && cmp (root->data, rh->data) != -1) {
         return 0;
     }
 
@@ -79,7 +87,7 @@ rb_invariant (struct rb_node *root) {
     }
 
     if (lh != 0 && rh != 0) {
-        return is_red (root) ? leftheight : leftheight + 1;
+        return is_red (root) ? height_left : height_left + 1;
     }
 #endif
     return 0;
