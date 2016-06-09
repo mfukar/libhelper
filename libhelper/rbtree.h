@@ -60,10 +60,9 @@ rb_invariant (struct rb_node *root) {
     struct rb_node *lh = root->rb_link[0];
     struct rb_node *rh = root->rb_link[1];
 
-    if (is_red (root)) {
-        if (is_red (lh) || is_red (rh)) {
+    if (is_red (root)
+    && (is_red (lh) || is_red (rh))) {
             return 0;
-        }
     }
 
     leftheight  = rb_invariant (lh);
@@ -74,12 +73,13 @@ rb_invariant (struct rb_node *root) {
         return 0;
     }
 
+    /* Every path from a given node to any of its leaf nodes contains the same number of black nodes: */
     if (lh != 0 && rh != 0 && lh != rh) {
         return 0;
     }
 
     if (lh != 0 && rh != 0) {
-        return is_red (root) ? lh : lh + 1;
+        return is_red (root) ? leftheight : leftheight + 1;
     }
 #endif
     return 0;

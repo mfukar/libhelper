@@ -1,6 +1,7 @@
 #include "overflow.h"
 #include "kmp.h"
 #include "aho-corasick.h"
+#include "rbtree.h"
 
 struct num {
 	size_t val;
