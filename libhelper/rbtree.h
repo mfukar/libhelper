@@ -93,7 +93,8 @@ rb_invariant (struct rb_node *root, int (*cmp)(void *lhs, void *rhs)) {
     return 0;
 }
 
-struct rb_node *rb_create_node (void *data) {
+static inline struct rb_node *
+rb_create_node (void *data) {
     struct rb_node *node = malloc (sizeof *node);
 
     if (!node) {
@@ -108,7 +109,8 @@ struct rb_node *rb_create_node (void *data) {
     return node;
 }
 
-struct rb_node *rb_insert_node (struct rb_node *root, void *data, int (*cmp)(void *, void *)) {
+static inline struct rb_node *
+rb_insert_node (struct rb_node *root, void *data, int (*cmp)(void *, void *)) {
     if (!root) {
         root = rb_create_node (data);
     }
@@ -117,15 +119,57 @@ struct rb_node *rb_insert_node (struct rb_node *root, void *data, int (*cmp)(voi
         bool right = cmp (root->data, data) == -1;
         root->rb_link[right] = rb_insert_node (root->rb_link[right], data, cmp);
 
-        /* TODO: rebalance */
+        /* Now rebalance the tree: */
+        if (is_red (root->rb_link[right])) {
+            if (is_red (root->rb_link[!right])) {
+                root->red = true;
+                root->rb_link[0]->red = false;
+                root->rb_link[1]->red = false;
+            } else {
+                if (is_red (root->rb_link[right]->rb_link[right])) {
+                    root = rotate_single (root, !right);
+                } else {
+                    root = rotate_double (root, !right);
+                }
+            }
+        }
     }
 
     return root;
 }
 
-void rb_insert (struct rb_tree *tree, void *data) {
+static inline struct rb_node *
+rb_remove_node (struct rb_node *root, void *data, bool *done) {
+    if (root == NULL) {
+        *done = true;
+        return root;
+    }
+
+    if (root->data == data) {
+
+    }
+
+    bool right = cmp (root->data, data) == -1;
+
+}
+
+static inline void
+rb_remove (struct rb_tree *tree, void *data) {
+    bool done = false;
+
+    tree->rb_node = rb_remove_node (tree->rb_node, data, &done);
+    
+    if (tree->rb_node) {
+        tree->rb_node->red = false;
+    }
+}
+
+static inline void
+rb_insert (struct rb_tree *tree, void *data) {
     tree->rb_node = rb_insert_node (tree->rb_node, data, tree->cmp);
     tree->rb_node->red = false; /* The root node is always black. */
 }
+
+
 
 #endif // rbtree_FCF1F854_7F36_47ED_9A40_902D4D7BAB54
