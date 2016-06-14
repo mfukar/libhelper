@@ -51,7 +51,7 @@ rotate_double (struct rb_node *root, bool dir) {
 /**
  * Check the invariants of a red-black tree.
  * Returns the black-height of the root node:
- * `cmp` returns -1 if lhs < rhs, 0 if lhs == rhs, 1 if lhs > rhs
+ * `cmp` returns -1 if lhs < rhs, 0 if lhs == rhs, 1 if lhs > rhs (a la strcmp)
  */
 static inline size_t
 rb_invariant (struct rb_node *root, int (*cmp)(void *lhs, void *rhs)) {
@@ -76,13 +76,13 @@ rb_invariant (struct rb_node *root, int (*cmp)(void *lhs, void *rhs)) {
      *   - lh->data < root->data
      *   - rh->data > root->data
      */
-    if (lh && cmp (root->data, lh->data) !=  1
-    ||  rh && cmp (root->data, rh->data) != -1) {
+    if (lh && cmp (root->data, lh->data) <= 0
+    ||  rh && cmp (root->data, rh->data) >= 0) {
         return 0;
     }
 
     /* Every path from a given node to any of its leaf nodes contains the same number of black nodes: */
-    if (lh != 0 && rh != 0 && lh != rh) {
+    if (height_left != 0 && height_right != 0 && height_left != height_right) {
         return 0;
     }
 
@@ -116,7 +116,7 @@ rb_insert_node (struct rb_node *root, void *data, int (*cmp)(void *, void *)) {
     }
 
     if (data != root->data) {
-        bool right = cmp (root->data, data) == -1;
+        bool right = cmp (root->data, data) < 0;
         root->rb_link[right] = rb_insert_node (root->rb_link[right], data, cmp);
 
         /* Now rebalance the tree: */
@@ -128,11 +128,59 @@ rb_insert_node (struct rb_node *root, void *data, int (*cmp)(void *, void *)) {
             } else {
                 if (is_red (root->rb_link[right]->rb_link[right])) {
                     root = rotate_single (root, !right);
-                } else {
+                } else if (is_red(root->rb_link[right]->rb_link[!right])) {
                     root = rotate_double (root, !right);
                 }
             }
         }
+    }
+
+    return root;
+}
+
+static inline struct rb_node *
+rb_remove_balance (struct rb_node *root, bool right, bool *done) {
+    struct rb_node *parent = root;
+    struct rb_node *sibling = root->rb_link[!right];
+
+    if (sibling && is_red (sibling)) {
+        root = rotate_single (root, right);
+        sibling = parent->rb_link[!right];
+    }
+
+    /* Done! */
+    if (sibling == NULL) {
+        return root;
+    }
+
+    if (!is_red (sibling->rb_link[0]) && !is_red (sibling->rb_link[1])) {
+        if (is_red (parent)) {
+            *done = true;
+        }
+
+        parent->red = true;
+        sibling->red = false;
+    } else {
+        bool color = root->red;
+        bool new_root = root == parent;
+
+        if (is_red (sibling->rb_link[!right])) {
+            parent = rotate_single (root, right);
+        } else {
+            parent = rotate_double (root, right);
+        }
+
+        parent->red = color;
+        parent->rb_link[0]->red = false;
+        parent->rb_link[1]->red = false;
+        
+        if (new_root) {
+            root = parent;
+        } else {
+            root->rb_link[right] = parent;
+        }
+
+        *done = true;
     }
 
     return root;
@@ -156,7 +204,8 @@ rb_remove_node (struct rb_node *root, void *data, int (*cmp)(void *, void *), bo
                 *done = true;
             }
 
-            /* TODO: free */
+            free (root);
+
             return leaf;
         } else {
             struct rb_node *heir = root->rb_link[0];
@@ -170,12 +219,12 @@ rb_remove_node (struct rb_node *root, void *data, int (*cmp)(void *, void *), bo
         }
     }
 
-    bool right = cmp (root->data, data) == -1;
+    bool right = cmp (root->data, data) < 0;
 
     root->rb_link[right] = rb_remove_node (root->rb_link[right], data, cmp, done);
 
     if (!*done) {
-        /* TODO: root = rb_remove_balance (root, dir, done); */
+        root = rb_remove_balance (root, right, done);
     }
 
     return root;
@@ -197,7 +246,6 @@ rb_insert (struct rb_tree *tree, void *data) {
     tree->rb_node = rb_insert_node (tree->rb_node, data, tree->cmp);
     tree->rb_node->red = false; /* The root node is always black. */
 }
-
 
 
 #endif // rbtree_FCF1F854_7F36_47ED_9A40_902D4D7BAB54
