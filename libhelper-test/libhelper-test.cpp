@@ -8,6 +8,19 @@ struct num {
 	dequeue list;
 };
 
+int intcmp (void *l, void *r) {
+    return *(int *)l - *(int *)r;
+}
+
+void inorder (struct rb_node* root, size_t d) {
+    if (!root) return;
+
+    inorder (root->rb_link[0], d + 1);
+    printf ("[%zu] (%s) %d\n", d, root->red ? "red" : "black", *(int *)root->data);
+    inorder (root->rb_link[1], d + 1);
+}
+
+
 int _tmain (int argc, TCHAR *argv[]) {
 
 	int32_t a = INT32_MIN, b = INT32_MIN;
@@ -59,5 +72,16 @@ int _tmain (int argc, TCHAR *argv[]) {
     res = ac_search_longest (&trie, "head of hers, OK?",
                              sizeof "head of hers, OK?", 0);
     assert (res.start == 8 && res.end == 12);
+
+    /*======================*/
+    int arr[] = { 11, 14, 2, 7, 1, 15, 5, 8};
+    struct rb_tree high = { 0 };
+    high.cmp = intcmp;
+    for (size_t i = 0; i < sizeof arr / sizeof *arr; ++i) {
+        rb_insert (&high, &arr[i]);
+    }
+    inorder (high.rb_node, 0);
+    assert (rb_invariant (high.rb_node, high.cmp) == 1);
+
 	return 0;
 }
