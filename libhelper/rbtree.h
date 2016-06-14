@@ -172,7 +172,7 @@ rb_remove_node (struct rb_node *root, void *data, int (*cmp)(void *, void *), bo
 
     bool right = cmp (root->data, data) == -1;
 
-    root->rb_link[right] = rb_remove_node (root->rb_link[right], data, cmd, done);
+    root->rb_link[right] = rb_remove_node (root->rb_link[right], data, cmp, done);
 
     if (!*done) {
         /* TODO: root = rb_remove_balance (root, dir, done); */
