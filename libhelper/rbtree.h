@@ -5,14 +5,14 @@
 #include <stdint.h>
 
 struct rb_node {
-	struct rb_node *parent;
+    struct rb_node *parent;
     struct rb_node *rb_link[2]; /** Exploit the symmetry here to make the code more concise */
     void *data; /** XXX How about an intrusive version instead? */
-	bool red;
+    bool red;
 };
 
 struct rb_tree {
-	struct rb_node *rb_node;
+    struct rb_node *rb_node;
     int (*cmp)(void *, void *); /** Comparator establishing a partial order */
 };
 
@@ -173,7 +173,7 @@ rb_remove_balance (struct rb_node *root, bool right, bool *done) {
         parent->red = color;
         parent->rb_link[0]->red = false;
         parent->rb_link[1]->red = false;
-        
+
         if (new_root) {
             root = parent;
         } else {
@@ -196,7 +196,7 @@ rb_remove_node (struct rb_node *root, void *data, int (*cmp)(void *, void *), bo
     if (root->data == data) {
         if (root->rb_link[0] == NULL || root->rb_link[1] == NULL) {
             struct rb_node *leaf = root->rb_link[root->rb_link[0] == NULL];
-            
+
             if (is_red (root)) {
                 *done = true;
             } else if (is_red(leaf)) {
@@ -235,7 +235,7 @@ rb_remove (struct rb_tree *tree, void *data) {
     bool done = false;
 
     tree->rb_node = rb_remove_node (tree->rb_node, data, tree->cmp, &done);
-    
+
     if (tree->rb_node) {
         tree->rb_node->red = false;
     }

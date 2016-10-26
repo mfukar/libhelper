@@ -8,8 +8,8 @@
                     __func__, __FILE__, __LINE__);                    \
             fflush(stderr);                                           \
             abort();                                                  \
-		}                                                             \
-	} while (0)
+        }                                                             \
+    } while (0)
 
 #define mf_assert_alloc(x)                                \
     do {                                                  \
@@ -18,8 +18,8 @@
                     __func__, __FILE__, __LINE__);        \
             fflush(stderr);                               \
             abort();                                      \
-		}                                                 \
-	} while (0)
+        }                                                 \
+    } while (0)
 
 #define mf_assert_fmt(x, fmt, ...)                                       \
     do {                                                                 \
@@ -28,8 +28,8 @@
                     # x, __func__, __FILE__, __LINE__, __VA_ARGS__);     \
             fflush(stderr);                                              \
             abort();                                                     \
-		}                                                                \
-	} while (0)
+        }                                                                \
+    } while (0)
 
 #define lz_errno_assert(x)                          \
     do {                                            \
@@ -39,7 +39,7 @@
                     __func__, __FILE__, __LINE__);  \
             fflush(stderr);                         \
             abort();                                \
-		}                                           \
-	} while (0)
+        }                                           \
+    } while (0)
 
 #endif

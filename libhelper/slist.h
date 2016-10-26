@@ -18,8 +18,8 @@ extern "C" {
  * Implementation of a singly-linked tail-queue, loosely based on Lisp lists.
  */
 struct sl_pair {
-	void *head;
-	struct sl_pair *tail;
+    void *head;
+    struct sl_pair *tail;
 };
 
 /**
@@ -31,32 +31,32 @@ typedef struct sl_pair *slist;
 #define slist_tail(pair) (pair)->tail
 
 static inline void slist_free(slist list) {
-	slist it;
+    slist it;
 
-	while (list != NULL) {
-		it = list;
-		list = slist_tail(list);
-		free(it);
-	}
+    while (list != NULL) {
+        it = list;
+        list = slist_tail(list);
+        free(it);
+    }
 }
 
 static inline slist slist_cons (slist tail, void *head) {
-	slist sl = malloc(sizeof *sl);
-	slist_head(sl) = head;
-	slist_tail(sl) = tail;
-	return sl;
+    slist sl = malloc(sizeof *sl);
+    slist_head(sl) = head;
+    slist_tail(sl) = tail;
+    return sl;
 }
 
 static inline void * slist_get_pair (slist pair, size_t index) {
-	for (size_t i = 0; pair && i != index; ++i) {
-		pair = slist_tail(pair);
-	}
-	
-	if (pair == NULL) {
+    for (size_t i = 0; pair && i != index; ++i) {
+        pair = slist_tail(pair);
+    }
+
+    if (pair == NULL) {
         return NULL;
     }
 
-	return slist_head(pair);
+    return slist_head(pair);
 }
 
 static inline slist slist_get_tail (slist pair, size_t index) {
@@ -72,31 +72,31 @@ static inline slist slist_get_tail (slist pair, size_t index) {
 }
 
 static inline slist slist_push(slist *list, void *data) {
-	return *list = slist_cons(*list, data);
+    return *list = slist_cons(*list, data);
 }
 
 static inline slist slist_push_pair(slist *list, slist pair) {
-	slist_tail (pair) = *list;
-	return *list = pair;
+    slist_tail (pair) = *list;
+    return *list = pair;
 }
 
 static inline slist slist_pop_pair (slist *list) {
-	slist result = *list;
+    slist result = *list;
 
     if (result == NULL) {
         return result;
     }
-	*list = slist_tail (result);
+    *list = slist_tail (result);
     return result;
 }
 
 static inline void * slist_pop(slist *list) {
-	slist pair = slist_pop_pair (list);
+    slist pair = slist_pop_pair (list);
 
-	if (pair == NULL) {
-		return pair;
-	}
-    
+    if (pair == NULL) {
+        return pair;
+    }
+
     void *item = slist_head (pair);
     free (pair);
     return item;
