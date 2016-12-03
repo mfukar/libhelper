@@ -13,7 +13,8 @@ int intcmp (void *l, void *r) {
 }
 
 void inorder (struct rb_node* root, size_t d) {
-    if (!root) return;
+    if (!root)
+		return;
 
     inorder (root->rb_link[0], d + 1);
     printf ("[%zu] (%s) %d\n", d, root->red ? "red" : "black", *(int *)root->data);
@@ -23,9 +24,9 @@ void inorder (struct rb_node* root, size_t d) {
 
 int _tmain (int argc, TCHAR *argv[]) {
 
-    int32_t a = INT32_MIN, b = INT32_MIN;
-    int32_t c = 0;
-    assert (true == checked_add_32 (a, b, &c));
+	int32_t a = INT32_MIN, b = INT32_MIN;
+	int32_t c = 0;
+	assert (checked_add_32 (a, b, &c));
 
     /*====================*/
     const char *barn = "Loremipsumdolorsitamet,consecteturadipisicingelit,seddoeiusmodtemporincididuntutlaboreetdoloremagnaaliqua.Utenimadminimveniam,quisnostrudexercitationullamcolaborisnisiutaliquipexeacommodoconsequat.Duisauteiruredolorinreprehenderitinvoluptatevelitessecillumdoloreeufugiatnullapariatur.Excepteursintoccaecatcupidatatnonproident,suntinculpaquiofficiadeseruntmollitanimidestlaborum.";
@@ -80,6 +81,9 @@ int _tmain (int argc, TCHAR *argv[]) {
     for (size_t i = 0; i < sizeof arr / sizeof *arr; ++i) {
         rb_insert (&high, &arr[i]);
     }
+    inorder (high.rb_node, 0);
+    assert (rb_invariant (high.rb_node, high.cmp) == 1);
+    rb_remove (&high, &arr[6]);
     inorder (high.rb_node, 0);
     assert (rb_invariant (high.rb_node, high.cmp) == 1);
 
