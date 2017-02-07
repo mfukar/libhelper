@@ -58,11 +58,11 @@ struct dlist {
          pos = dlist_entry(pos->member.next, typeof(*pos), member))
 
 /**
-* Iterate over a dlist of given type, backwards. Not safe against mutation during iteration.
-* @head:       the head of the dlist
-* @pos:        a pointer to the element type, to use as a loop cursor
-* @member:     the name of the `struct dlist *` within the element
-*/
+ * Iterate over a dlist of given type, backwards. Not safe against mutation during iteration.
+ * @head:       the head of the dlist
+ * @pos:        a pointer to the element type, to use as a loop cursor
+ * @member:     the name of the `struct dlist *` within the element
+ */
 #define dlist_for_each_previous_entry_unsafe(head, pos, member) \
     for (pos = dlist_entry((head)->prev, typeof(*pos), member);\
          &pos->member != (head);\
@@ -111,7 +111,7 @@ static inline bool dlist_is_last(struct dlist *entry, struct dlist *head) {
 }
 
 /**
-* For internal usage only.
+ * For internal usage only.
  * Insert a new element between two known, consecutive elements:
  */
 static inline void _dlist_insert(struct dlist *elem, struct dlist *prev, struct dlist *next) {

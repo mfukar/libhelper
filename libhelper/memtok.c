@@ -1,18 +1,18 @@
 /**
-* @file        /libhelper/src/memtok.c
-* @author      Michael Foukarakis
-* @version     <+version+>
-* @date        Created:     Oct 24, 2011 12:41 EEST
-*              Last Update: Wed Oct 26, 2016 11:27 CEST
-*------------------------------------------------------------------------
-* Description: <+description+>
-*------------------------------------------------------------------------
-* History:     <+history+>
-* TODO:        <+missing features+>
-*------------------------------------------------------------------------
-* -*- coding: utf-8 -*-
-*------------------------------------------------------------------------
-*/
+ * @file        /libhelper/src/memtok.c
+ * @author      Michael Foukarakis
+ * @version     <+version+>
+ * @date        Created:     Oct 24, 2011 12:41 EEST
+ *              Last Update: Wed Oct 26, 2016 11:27 CEST
+ *------------------------------------------------------------------------
+ * Description: <+description+>
+ *------------------------------------------------------------------------
+ * History:     <+history+>
+ * TODO:        <+missing features+>
+ *------------------------------------------------------------------------
+ * -*- coding: utf-8 -*-
+ *------------------------------------------------------------------------
+ */
 #include "stdafx.h"
 
 bytes_t memtok (const void *s, size_t length, const char *delim, bytes_t *save_ptr) {

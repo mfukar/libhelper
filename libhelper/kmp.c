@@ -1,18 +1,18 @@
 /**
-* @file        /libhelper/src/kmp.c
-* @author      Michael Foukarakis
-* @version     <+version+>
-* @date        Created:     Mon Mar 03, 2014 09:15 GMT
-*              Last Update: Wed Oct 26, 2016 11:27 CEST
-*------------------------------------------------------------------------
-* Description: <+description+>
-*------------------------------------------------------------------------
-* History:     <+history+>
-* TODO:        <+missing features+>
-*------------------------------------------------------------------------
-* -*- coding: utf-8 -*-
-*------------------------------------------------------------------------
-*/
+ * @file        /libhelper/src/kmp.c
+ * @author      Michael Foukarakis
+ * @version     <+version+>
+ * @date        Created:     Mon Mar 03, 2014 09:15 GMT
+ *              Last Update: Wed Oct 26, 2016 11:27 CEST
+ *------------------------------------------------------------------------
+ * Description: <+description+>
+ *------------------------------------------------------------------------
+ * History:     <+history+>
+ * TODO:        <+missing features+>
+ *------------------------------------------------------------------------
+ * -*- coding: utf-8 -*-
+ *------------------------------------------------------------------------
+ */
 #include <string.h>
 #include "kmp.h"
 

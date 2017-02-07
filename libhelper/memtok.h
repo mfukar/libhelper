@@ -19,8 +19,8 @@
 #include "bytes.h"
 
 /**
-* @brief
-*/
+ * @brief
+ */
 bytes_t memtok (const void *, size_t, const char *, bytes_t *);
 
 #endif // memtok_3B849C5F87BD41179E328E606F06DA9C__
