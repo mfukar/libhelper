@@ -1,5 +1,5 @@
-#ifndef bytes_BBBD2074549246CFACCE7F2EFCEA1D5A__
-#define bytes_BBBD2074549246CFACCE7F2EFCEA1D5A__
+#ifndef bytes_BBBD2074549246CFACCE7F2EFCEA1D5A
+#define bytes_BBBD2074549246CFACCE7F2EFCEA1D5A
 
 
 #include <stdint.h>
@@ -13,4 +13,4 @@ typedef struct {
 	size_t length;
 } bytes_t;
 
-#endif // bytes_BBBD2074549246CFACCE7F2EFCEA1D5A__
+#endif // bytes_BBBD2074549246CFACCE7F2EFCEA1D5A

@@ -31,7 +31,7 @@
         }                                                                \
     } while (0)
 
-#define lz_errno_assert(x)                          \
+#define mf_errno_assert(x)                          \
     do {                                            \
         if (!(x)) {                                 \
             fprintf(stderr, "%s [%d] (%s:%s:%d)\n", \

@@ -15,7 +15,7 @@
  */
 #include "stdafx.h"
 
-bytes_t memtok (const void *s, size_t length, const char *delim, bytes_t *save_ptr) {
+bytes_t memtok (const void * restrict s, size_t length, const char * restrict delim, bytes_t * restrict save_ptr) {
     const unsigned char *stream;
     size_t len = 0;
 

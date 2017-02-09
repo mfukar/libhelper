@@ -13,14 +13,17 @@
 * -*- coding: utf-8 -*-
 *------------------------------------------------------------------------
 */
-#ifndef memtok_3B849C5F87BD41179E328E606F06DA9C__
-#define memtok_3B849C5F87BD41179E328E606F06DA9C__
+#ifndef memtok_3B849C5F87BD41179E328E606F06DA9C
+#define memtok_3B849C5F87BD41179E328E606F06DA9C
 
 #include "bytes.h"
 
 /**
- * @brief
+ * @brief Parse a memory buffer into a sequence of tokens.
+ * 
+ * The first call to memtok has a non-null first argument; subsequent calls
+ * have a null first argument.
  */
-bytes_t memtok (const void *, size_t, const char *, bytes_t *);
+bytes_t memtok (const void * restrict s, size_t, const char * restrict delim, bytes_t * restrict save_ptr);
 
-#endif // memtok_3B849C5F87BD41179E328E606F06DA9C__
+#endif // memtok_3B849C5F87BD41179E328E606F06DA9C
