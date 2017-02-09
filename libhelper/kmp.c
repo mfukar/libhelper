@@ -1,11 +1,11 @@
 /**
  * @file        /libhelper/src/kmp.c
  * @author      Michael Foukarakis
- * @version     <+version+>
+ * @version     0.1
  * @date        Created:     Mon Mar 03, 2014 09:15 GMT
  *              Last Update: Wed Oct 26, 2016 11:27 CEST
  *------------------------------------------------------------------------
- * Description: <+description+>
+ * Description: Knuth-Morris-Pratt string searching algorithm implementation
  *------------------------------------------------------------------------
  * History:     <+history+>
  * TODO:        <+missing features+>

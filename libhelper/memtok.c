@@ -1,11 +1,11 @@
 /**
  * @file        /libhelper/src/memtok.c
  * @author      Michael Foukarakis
- * @version     <+version+>
+ * @version     0.1
  * @date        Created:     Oct 24, 2011 12:41 EEST
  *              Last Update: Wed Oct 26, 2016 11:27 CEST
  *------------------------------------------------------------------------
- * Description: <+description+>
+ * Description: Various functions for manipulating memory buffers
  *------------------------------------------------------------------------
  * History:     <+history+>
  * TODO:        <+missing features+>
