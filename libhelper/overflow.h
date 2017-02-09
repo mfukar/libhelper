@@ -1,7 +1,8 @@
 #ifndef overflow_86C759C7_67F9_4242_9A14_73C63A3545B0
 #define overflow_86C759C7_67F9_4242_9A14_73C63A3545B0
 
-#include "stdafx.h"
+#include <stdbool.h>
+#include <stdint.h>
 
 /**
  * @description Performs 64-bit two's complement addition of A and B and stores the result

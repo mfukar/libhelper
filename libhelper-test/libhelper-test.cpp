@@ -1,3 +1,5 @@
+#include <stdio.h>
+
 #include "overflow.h"
 #include "kmp.h"
 #include "aho-corasick.h"
@@ -22,7 +24,7 @@ void inorder (struct rb_node* root, size_t d) {
 }
 
 
-int _tmain (int argc, TCHAR *argv[]) {
+int main (int argc, char *argv[]) {
 
 	int32_t a = INT32_MIN, b = INT32_MIN;
 	int32_t c = 0;

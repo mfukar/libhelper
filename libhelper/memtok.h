@@ -24,6 +24,6 @@
  * The first call to memtok has a non-null first argument; subsequent calls
  * have a null first argument.
  */
-bytes_t memtok (const void * restrict s, size_t, const char * restrict delim, bytes_t * restrict save_ptr);
+bytes_t memtok (const void * restrict s, size_t length, const char * restrict delim, bytes_t * restrict save_ptr);
 
 #endif // memtok_3B849C5F87BD41179E328E606F06DA9C

@@ -13,10 +13,6 @@ extern "C" {
  * in /source/tools/include/linux/list.h
  */
 
-/* Portable implementation of container_of: */
-#define container_of(ptr, type, member) \
-    ((type *) ((char *)(ptr) - offsetof(type, member)))
-
 struct dlist {
     struct dlist *next, *prev;
 };

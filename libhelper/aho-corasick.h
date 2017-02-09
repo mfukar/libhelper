@@ -1,12 +1,13 @@
-#pragma once
+#ifndef ac_6C7055133686455382B48F901BE5ABC6
+#define ac_6C7055133686455382B48F901BE5ABC6
 
 #include <stdbool.h>
 #include <stdlib.h>
 #include <string.h>
 #include <assert.h>
 #include "queue.h"
+#include "utils.h"
 
-#define ARRAY_SIZE(a) sizeof (a) / sizeof (*a)
 
 struct ac_state {
     size_t id;
@@ -196,3 +197,5 @@ ac_result ac_search_longest (struct ac_trie *trie, char *text, size_t ntext, siz
     }
     return (ac_result) { .id = 0, .start = -1, .end = -1, .last_state = NULL };
 }
+
+#endif

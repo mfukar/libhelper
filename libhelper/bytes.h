@@ -1,7 +1,6 @@
 #ifndef bytes_BBBD2074549246CFACCE7F2EFCEA1D5A
 #define bytes_BBBD2074549246CFACCE7F2EFCEA1D5A
 
-
 #include <stdint.h>
 
 /**
