@@ -1,5 +1,5 @@
-#ifndef MF_ASSERT_H
-#define MF_ASSERT_H
+#ifndef assert_ab860c1d54014aaa9428fba0fed60ea6
+#define assert_ab860c1d54014aaa9428fba0fed60ea6
 
 #define mf_assert(x)                                                  \
     do {                                                              \

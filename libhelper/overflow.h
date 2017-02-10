@@ -1,5 +1,5 @@
-#ifndef overflow_86C759C7_67F9_4242_9A14_73C63A3545B0
-#define overflow_86C759C7_67F9_4242_9A14_73C63A3545B0
+#ifndef overflow_86c759c767f942429a1473c63a3545b0
+#define overflow_86c759c767f942429a1473c63a3545b0
 
 #include <stdbool.h>
 #include <stdint.h>
@@ -40,4 +40,4 @@ static inline bool checked_add_16 (int16_t a, int16_t b, int16_t *rp) {
 		|| (a >= 0 && b >= 0 && r < 0);
 }
 
-#endif // overflow_86C759C7_67F9_4242_9A14_73C63A3545B0
+#endif

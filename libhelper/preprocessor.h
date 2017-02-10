@@ -5,7 +5,7 @@
 * @date        Created:     Thu Dec 19, 2013 11:48 EET
 *              Last Update: Mon Jun 06, 2016 12:13 GTBDT
 *------------------------------------------------------------------------
-* Description: <+description+>
+* Description: Useful preprocessor macros for C11 programs.
 *------------------------------------------------------------------------
 * History:     <+history+>
 * TODO:        <+missing features+>
@@ -13,8 +13,8 @@
 * -*- coding: utf-8 -*-
 *------------------------------------------------------------------------
 */
-#ifndef preprocessor_8C9E86E0AFB24D149A77C00CFB7ADFB2
-#define preprocessor_8C9E86E0AFB24D149A77C00CFB7ADFB2
+#ifndef preprocessor_8c9e86e0afb24d149a77c00cfb7adfb2
+#define preprocessor_8c9e86e0afb24d149a77c00cfb7adfb2
 
 /**
 * A preprocessor macro tying resource management to the scope of a variable for FILE
@@ -57,4 +57,4 @@
     } \
 } while(0)
 
-#endif // preprocessor_8C9E86E0AFB24D149A77C00CFB7ADFB2
+#endif

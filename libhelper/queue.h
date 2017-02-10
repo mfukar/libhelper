@@ -1,4 +1,5 @@
-#pragma once
+#ifndef queue_2e4f3b0fa3304dd990755cfa2c99cab1
+#define queue_2e4f3b0fa3304dd990755cfa2c99cab1
 
 #include "dlist.h"
 
@@ -24,4 +25,6 @@ dequeue_pop_front (dequeue *queue) {
 
 #ifdef __cplusplus__
 }
+#endif
+
 #endif

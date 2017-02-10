@@ -1,5 +1,5 @@
-#ifndef ac_6C7055133686455382B48F901BE5ABC6
-#define ac_6C7055133686455382B48F901BE5ABC6
+#ifndef ac_6c7055133686455382b48f901be5abc6
+#define ac_6c7055133686455382b48f901be5abc6
 
 #include <stdbool.h>
 #include <stdlib.h>

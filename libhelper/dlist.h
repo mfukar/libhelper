@@ -1,5 +1,5 @@
-#ifndef MF_DLIST_H
-#define MF_DLIST_H
+#ifndef dlist_959d884c829d4e6ca0462bf53af52923 
+#define dlist_959d884c829d4e6ca0462bf53af52923
 
 #include <stdbool.h>
 
@@ -163,4 +163,4 @@ static inline void dlist_merge(struct dlist *head, struct dlist *list) {
 }
 #endif
 
-#endif /* MF_DLIST_H */
+#endif

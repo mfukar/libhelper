@@ -1,5 +1,5 @@
-#ifndef utils_08B13F277C7649A9ACB26C015786D5A7
-#define utils_08B13F277C7649A9ACB26C015786D5A7
+#ifndef utils_08b13f277c7649a9acb26c015786d5a7
+#define utils_08b13f277c7649a9acb26c015786d5a7
 
 #define ARRAY_SIZE(a) sizeof (a) / sizeof (*a)
 
