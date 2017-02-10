@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 14
-VisualStudioVersion = 14.0.25123.0
+VisualStudioVersion = 14.0.25420.1
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "libhelper", "libhelper\libhelper.vcxproj", "{83932E76-BFB8-4C66-8F38-16684EE51997}"
 EndProject
@@ -11,6 +11,8 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "libhelper-test", "libhelper
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{981002EB-66FC-44DE-A83C-44B9161566A5}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "libhelper-unit-tests", "libhelper-unit-tests\libhelper-unit-tests.vcxproj", "{286FB595-1C1C-40F9-8F0D-9275A55B71FF}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -36,6 +38,14 @@ Global
 		{592F3880-1A3E-415B-BF65-0CA4A63DEB61}.Release|Win32.Build.0 = Release|Win32
 		{592F3880-1A3E-415B-BF65-0CA4A63DEB61}.Release|x64.ActiveCfg = Release|x64
 		{592F3880-1A3E-415B-BF65-0CA4A63DEB61}.Release|x64.Build.0 = Release|x64
+		{286FB595-1C1C-40F9-8F0D-9275A55B71FF}.Debug|Win32.ActiveCfg = Debug|Win32
+		{286FB595-1C1C-40F9-8F0D-9275A55B71FF}.Debug|Win32.Build.0 = Debug|Win32
+		{286FB595-1C1C-40F9-8F0D-9275A55B71FF}.Debug|x64.ActiveCfg = Debug|x64
+		{286FB595-1C1C-40F9-8F0D-9275A55B71FF}.Debug|x64.Build.0 = Debug|x64
+		{286FB595-1C1C-40F9-8F0D-9275A55B71FF}.Release|Win32.ActiveCfg = Release|Win32
+		{286FB595-1C1C-40F9-8F0D-9275A55B71FF}.Release|Win32.Build.0 = Release|Win32
+		{286FB595-1C1C-40F9-8F0D-9275A55B71FF}.Release|x64.ActiveCfg = Release|x64
+		{286FB595-1C1C-40F9-8F0D-9275A55B71FF}.Release|x64.Build.0 = Release|x64
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
