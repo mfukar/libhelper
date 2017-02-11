@@ -16,7 +16,7 @@ int intcmp (void *l, void *r) {
 
 void inorder (struct rb_node* root, size_t d) {
     if (!root)
-		return;
+        return;
 
     inorder (root->rb_link[0], d + 1);
     printf ("[%zu] (%s) %d\n", d, root->red ? "red" : "black", *(int *)root->data);
@@ -34,8 +34,8 @@ int main (int argc, char *argv[]) {
     ac_trie_insert (&trie, "looking");
     ac_trie_insert (&trie, "what");
     ac_build_failure_function (&trie);
-    struct ac_result res = ac_search (&trie, "head of hers, OK?",
-                               sizeof "head of hers, OK?", 0);
+    struct ac_result res = ac_search (&trie, "head of hers, OK?", 
+                                      sizeof "head of hers, OK?", 0);
     assert (res.start == 0 && res.end == 2);
     res = ac_search_longest (&trie, "head of hers, OK?",
                              sizeof "head of hers, OK?", 0);
