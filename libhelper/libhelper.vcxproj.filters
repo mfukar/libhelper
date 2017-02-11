@@ -68,5 +68,8 @@
     <ClCompile Include="memtok.c">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="aho-corasick.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>

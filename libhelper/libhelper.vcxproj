@@ -170,6 +170,7 @@
     <ClInclude Include="utils.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="aho-corasick.c" />
     <ClCompile Include="kmp.c" />
     <ClCompile Include="memtok.c" />
   </ItemGroup>
