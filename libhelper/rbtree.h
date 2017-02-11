@@ -4,6 +4,10 @@
 #include <stdbool.h>
 #include <stdint.h>
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 struct rb_node {
     struct rb_node *parent;
     struct rb_node *rb_link[2]; /** Exploit the symmetry here to make the code more concise */
@@ -247,5 +251,8 @@ rb_insert (struct rb_tree *tree, void *data) {
     tree->rb_node->red = false; /* The root node is always black. */
 }
 
+#ifdef __cplusplus
+}
+#endif
 
-#endif // rbtree_FCF1F854_7F36_47ED_9A40_902D4D7BAB54
+#endif

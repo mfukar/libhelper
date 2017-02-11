@@ -16,16 +16,20 @@
 #ifndef preprocessor_8c9e86e0afb24d149a77c00cfb7adfb2
 #define preprocessor_8c9e86e0afb24d149a77c00cfb7adfb2
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 /**
-* A preprocessor macro tying resource management to the scope of a variable for FILE
-* objects.
-*
-* @param varname
-* @param fname
-* @param options
-* @param block
-* @param error
-*/
+ * A preprocessor macro tying resource management to the scope of a variable for FILE
+ * objects.
+ *
+ * @param varname
+ * @param fname
+ * @param options
+ * @param block
+ * @param error
+ */
 #define WITH_FILE(varname, fname, options, block, error) do {\
     FILE * const varname = fopen(fname, options); \
     if (varname) { \
@@ -38,15 +42,15 @@
 
 
 /**
-* A preprocessor macro tying resource management to the scope of a variable for heap
-* memory obtained with malloc(3).
-*
-* @param varname
-* @param type
-* @param count
-* @param block
-* @param error
-*/
+ * A preprocessor macro tying resource management to the scope of a variable for heap
+ * memory obtained with malloc(3).
+ *
+ * @param varname
+ * @param type
+ * @param count
+ * @param block
+ * @param error
+ */
 #define WITH_MALLOC(varname, type, count, block, error) do { \
     type * const varname = malloc( (count) * sizeof (type)); \
     if (varname) { \
@@ -57,4 +61,7 @@
     } \
 } while(0)
 
+#ifdef __cplusplus
+}
+#endif
 #endif

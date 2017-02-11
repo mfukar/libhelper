@@ -1,6 +1,10 @@
 #ifndef assert_ab860c1d54014aaa9428fba0fed60ea6
 #define assert_ab860c1d54014aaa9428fba0fed60ea6
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 #define mf_assert(x)                                                  \
     do {                                                              \
         if (!(x)) {                                                   \
@@ -42,4 +46,7 @@
         }                                           \
     } while (0)
 
+#ifdef __cplusplus
+}
+#endif
 #endif

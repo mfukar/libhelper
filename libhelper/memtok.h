@@ -3,6 +3,10 @@
 
 #include "bytes.h"
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 /**
  * @brief Parse a memory buffer into a sequence of tokens.
  * 
@@ -10,5 +14,9 @@
  * have a null first argument.
  */
 bytes_t memtok (const void * restrict s, size_t length, const char * restrict delim, bytes_t * restrict save_ptr);
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif

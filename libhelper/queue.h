@@ -3,7 +3,7 @@
 
 #include "dlist.h"
 
-#ifdef __cplusplus__
+#ifdef __cplusplus
 extern "C" {
 #endif
 
@@ -23,7 +23,7 @@ dequeue_pop_front (dequeue *queue) {
 	return node;
 }
 
-#ifdef __cplusplus__
+#ifdef __cplusplus
 }
 #endif
 

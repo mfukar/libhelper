@@ -3,7 +3,7 @@
 
 #include <stdlib.h>
 
-#ifdef __cplusplus__
+#ifdef __cplusplus
 extern "C" {
 #endif
 
@@ -180,7 +180,7 @@ static inline slist slist_sort (slist list, int (*cmp)(void *, void*)) {
     return slist_merge (slist_sort(list, cmp), slist_sort(result, cmp), cmp);
 }
 
-#ifdef __cplusplus__
+#ifdef __cplusplus
 }
 #endif
-#endif /* MF_SLIST_H */
+#endif

@@ -3,7 +3,7 @@
 
 #include <stdbool.h>
 
-#ifdef __cplusplus__
+#ifdef __cplusplus
 extern "C" {
 #endif
 
@@ -159,7 +159,7 @@ static inline void dlist_merge(struct dlist *head, struct dlist *list) {
     at->prev = last;
 }
 
-#ifdef __cplusplus__
+#ifdef __cplusplus
 }
 #endif
 
