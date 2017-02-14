@@ -12,6 +12,7 @@ using namespace Microsoft::VisualStudio::CppUnitTestFramework;
 
 namespace libhelperunittests {
     TEST_CLASS (UnitTest1) {
+        const char *barn = "Loremipsumdolorsitamet,consecteturadipisicingelit,seddoeiusmodtemporincididuntutlaboreetdoloremagnaaliqua.Utenimadminimveniam,quisnostrudexercitationullamcolaborisnisiutaliquipexeacommodoconsequat.Duisauteiruredolorinreprehenderitinvoluptatevelitessecillumdoloreeufugiatnullapariatur.Excepteursintoccaecatcupidatatnonproident,suntinculpaquiofficiadeseruntmollitanimidestlaborum.";
     public:
         TEST_METHOD(test_32bit_signed_addition) {
             int32_t a = INT32_MIN, b = INT32_MIN;
@@ -19,19 +20,28 @@ namespace libhelperunittests {
             Assert::IsTrue (checked_add_32 (a, b, &c));
         }
 
-        TEST_METHOD (test_kmp_search) {
-            const char *barn = "Loremipsumdolorsitamet,consecteturadipisicingelit,seddoeiusmodtemporincididuntutlaboreetdoloremagnaaliqua.Utenimadminimveniam,quisnostrudexercitationullamcolaborisnisiutaliquipexeacommodoconsequat.Duisauteiruredolorinreprehenderitinvoluptatevelitessecillumdoloreeufugiatnullapariatur.Excepteursintoccaecatcupidatatnonproident,suntinculpaquiofficiadeseruntmollitanimidestlaborum.";
+        TEST_METHOD (test_kmp_search_successful) {
             const char test_success[] = "tempor";
-            const char test_fail[] = "participate in parachute";
 
             size_t ff1[sizeof test_success] = { 0 };
-
-            kmp_ff (test_success, ff1, sizeof ff1 / sizeof *ff1);
+            kmp_ff (test_success, ff1, ARRAY_SIZE(ff1));
             Assert::IsTrue (kmp (barn, ::strlen (barn), test_success, ::strlen (test_success), ff1) == ::strstr (barn, test_success) - barn);
+        }
 
+        TEST_METHOD (test_kmp_search_all_substrings) {
+            size_t ff[sizeof barn] = {0};
+            for (const char *substring = barn + strlen (barn) - 1; substring != barn; --substring) {
+                kmp_ff (substring, ff, ARRAY_SIZE (ff));
+
+                Assert::IsTrue (kmp (barn, ::strlen (barn), substring, ::strlen (substring), ff) == ::strstr (barn, substring) - barn);
+            }
+        }
+
+        TEST_METHOD(test_kmp_search_unsuccessful) {
+            const char test_fail[] = "participate in parachute";
             size_t ff2[sizeof test_fail] = { 0 };
 
-            kmp_ff (test_fail, ff2, sizeof ff2 / sizeof *ff2);
+            kmp_ff (test_fail, ff2, ARRAY_SIZE(ff2));
             Assert::IsTrue (kmp (barn, ::strlen (barn), test_fail, ::strlen (test_fail), ff2) == -1);
         }
 
