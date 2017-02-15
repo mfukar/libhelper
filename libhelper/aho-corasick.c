@@ -105,6 +105,13 @@ bool ac_build_failure_function (struct ac_trie *trie) {
 	return true;
 }
 
+bool ac_search_matched (struct ac_result res) {
+    return !(res.id == 0
+          && res.start == -1
+          && res.end == -1
+          && res.last_state == NULL);
+}
+
 struct ac_result ac_search (struct ac_trie *trie, char *text, size_t ntext, size_t offset) {
 	struct ac_state *state = trie->root;
 	for (size_t i = 0 + offset; i < ntext; ++i) {

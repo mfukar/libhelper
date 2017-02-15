@@ -52,6 +52,8 @@ struct ac_result {
 	struct ac_state *last_state;
 };
 
+bool ac_search_matched (struct ac_result res);
+
 struct ac_result ac_search (struct ac_trie *trie, char *text, size_t ntext, size_t offset);
 
 /**
