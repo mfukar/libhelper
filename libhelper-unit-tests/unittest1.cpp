@@ -63,25 +63,58 @@ namespace libhelperunittests {
             }
         }
 
-        TEST_METHOD (test_trie) {
+        TEST_METHOD (test_trie_matches) {
             struct ac_trie trie;
             ac_trie_init (&trie);
-            ac_trie_insert (&trie, "she");
-            ac_trie_insert (&trie, "tried");
-            ac_trie_insert (&trie, "hers");
-            ac_trie_insert (&trie, "he");
-            ac_trie_insert (&trie, "looking");
-            ac_trie_insert (&trie, "what");
-            ac_build_failure_function (&trie);
+            Assert::IsTrue (ac_trie_insert (&trie, "she"));
+            Assert::IsTrue (ac_trie_insert (&trie, "tried"));
+            Assert::IsTrue (ac_trie_insert (&trie, "hers"));
+            Assert::IsTrue (ac_trie_insert (&trie, "he"));
+            Assert::IsTrue (ac_trie_insert (&trie, "looking"));
+            Assert::IsTrue (ac_trie_insert (&trie, "what"));
+
+            Assert::IsTrue (ac_build_failure_function (&trie));
+
             struct ac_result res = ac_search (&trie, "head of hers, OK?",
                                               sizeof "head of hers, OK?", 0);
+            Assert::IsTrue (ac_search_matched (res));
             Assert::IsTrue (res.start == 0 && res.end == 2);
+
             res = ac_search_longest (&trie, "head of hers, OK?",
                                      sizeof "head of hers, OK?", 0);
             Assert::IsTrue (res.start == 8 && res.end == 12);
+        }
+
+        TEST_METHOD (test_trie_no_match) {
+            struct ac_trie trie;
+            ac_trie_init (&trie);
+            Assert::IsTrue (ac_trie_insert (&trie, "parachute"));
+            Assert::IsTrue (ac_trie_insert (&trie, "participation"));
+            Assert::IsTrue (ac_trie_insert (&trie, "anagram"));
+            Assert::IsTrue (ac_trie_insert (&trie, "herewith"));
+
+            Assert::IsTrue (ac_build_failure_function (&trie));
+
             char *haystack = "Using for reference, Aho and Corasick, Efficient string matching: an aid to bibliographic search (Communications of the ACM, 18(6):333–340, 1975) (PDF).Algorithm 2 is mostly creating a trie or 'keyword tree' in the paper.Important Note: They make the assumption that g(s,a)=failg(s,a)=fail if either aa is undefined, or g(s,a)g(s,a) hasn't been defined yet. You can think of this function as an edge, it either points to the next state or returns failfail. Assume evaluating and assigning to functions, such as gg or outputoutput, takes constant time.Example:Let's consider the intuition for a single keyword xx. Use the last graph on page 335 with his, hers and she. Let's add 'hello' and verify that it takes linear time in the length. We can generalize from there.For this example, let y=helloy=hello.s=0s=0, the initial state. First, we find out that g(0,h)=1g(0,h)=1 so we set s=1s=1. Next we check g(1,e)g(1,e), which takes us to s=2s=2.Now g(2,l)=failg(2,l)=fail, there is no edge for ll, we have to create a state, s=10s=10 and set g(2,l)=10g(2,l)=10. State 1010 corresponds to the string helhel.Again g(10,l)=failg(10,l)=fail, we create a new state s=11(hell)s=11(hell). The same happens for oo : g(11,o)=failg(11,o)=fail, make a new state 12(hello)12(hello).We've finished hellohello, as a last step we set output(12)=hellooutput(12)=hello.Rough Analysis:Calling g(s,a)g(s,a), assigning values, and creating new states are constant time. Since we perform a constant number of each operation per letter, the complexity is O(|y|)O(|y|).Algorithm 2 does this for each key word. Notice that the same bound holds for each keyword added, regardless of what g(s,a)g(s,a) returns for each letter. Then the total time complexity is O(∑ik|yi|)O(∑ik|yi|), proportional to the sum of the length of the keywords.The algorithm also sets a self-loop for any unused symbols, or g(0,a)=0g(0,a)=0 for all aa that weren't the first letter of a keyword. We only need to consider letters in the set of keywords, so this step is still bounded by the sum length.";
-            res = ac_search_longest (&trie, haystack,
-                                     sizeof haystack, 0);
+            struct ac_result res = ac_search_longest (&trie, haystack, sizeof haystack, 0);
+            Logger::WriteMessage (haystack + res.start);
+            Assert::IsFalse (ac_search_matched (res));
+        }
+
+        TEST_METHOD (test_trie_not_enough_hay_for_match) {
+            struct ac_trie trie;
+            ac_trie_init (&trie);
+            Assert::IsTrue (ac_trie_insert (&trie, "she"));
+            Assert::IsTrue (ac_trie_insert (&trie, "tried"));
+            Assert::IsTrue (ac_trie_insert (&trie, "hers"));
+            Assert::IsTrue (ac_trie_insert (&trie, "he"));
+            Assert::IsTrue (ac_trie_insert (&trie, "looking"));
+            Assert::IsTrue (ac_trie_insert (&trie, "what"));
+
+            Assert::IsTrue (ac_build_failure_function (&trie));
+
+            struct ac_result res = ac_search (&trie, "h", sizeof "h", 0);
+            Assert::IsFalse (ac_search_matched (res));
         }
         /*
         TEST_METHOD (rb_tree) {
