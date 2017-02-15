@@ -20,6 +20,14 @@ namespace libhelperunittests {
             Assert::IsTrue (checked_add_32 (a, b, &c));
         }
 
+        TEST_METHOD (test_64bit_signed_addition) {
+            int64_t a = 1, b = INT64_MAX;
+            int64_t c = 0;
+            Assert::IsTrue (checked_add_64 (b, a, &c));
+            a = 0; b = INT64_MAX;
+            Assert::IsFalse (checked_add_64 (a, b, &c));
+        }
+
         TEST_METHOD (test_kmp_search_successful) {
             const char test_success[] = "tempor";
 
