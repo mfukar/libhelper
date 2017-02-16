@@ -71,5 +71,8 @@
     <ClCompile Include="aho-corasick.c">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="rbtree.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>

@@ -173,6 +173,7 @@
     <ClCompile Include="aho-corasick.c" />
     <ClCompile Include="kmp.c" />
     <ClCompile Include="memtok.c" />
+    <ClCompile Include="rbtree.c" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
