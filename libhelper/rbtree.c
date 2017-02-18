@@ -31,7 +31,6 @@ struct rb_node * rotate_double (struct rb_node *root, bool dir) {
 * `cmp` returns -1 if lhs < rhs, 0 if lhs == rhs, 1 if lhs > rhs (a la strcmp)
 */
 size_t rb_invariant (struct rb_node *root, int (*cmp)(void *lhs, void *rhs)) {
-#ifndef NDEBUG
     size_t height_left, height_right;
 
     if (!root) return 1;
@@ -65,7 +64,7 @@ size_t rb_invariant (struct rb_node *root, int (*cmp)(void *lhs, void *rhs)) {
     if (lh != 0 && rh != 0) {
         return is_red (root) ? height_left : height_left + 1;
     }
-#endif
+
     return 0;
 }
 
