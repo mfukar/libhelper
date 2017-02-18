@@ -22,12 +22,7 @@ struct rb_tree {
 
 #define rb_parent(r)   ((struct rb_node *) (r)->parent)
 
-/**
- * Returns true if the passed node is red, false otherwise.
- */
-bool is_red (struct rb_node *node) {
-    return node && node->red;
-}
+bool is_red (struct rb_node *node);
 
 /**
  * A single rotation in a red-black tree rotates the nodes and recolors:

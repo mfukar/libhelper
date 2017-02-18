@@ -1,5 +1,12 @@
 #include "rbtree.h"
 
+/**
+* Returns true if the passed node is red, false otherwise.
+*/
+bool is_red (struct rb_node *node) {
+    return node && node->red;
+}
+
 struct rb_node * rotate_single (struct rb_node *root, bool dir) {
     struct rb_node *save = root->rb_link[!dir];
 
@@ -12,8 +19,7 @@ struct rb_node * rotate_single (struct rb_node *root, bool dir) {
     return save;
 }
 
-static inline struct rb_node *
-rotate_double (struct rb_node *root, bool dir) {
+struct rb_node * rotate_double (struct rb_node *root, bool dir) {
     root->rb_link[!dir] = rotate_single (root->rb_link[!dir], !dir);
 
     return rotate_single (root, dir);
@@ -24,8 +30,7 @@ rotate_double (struct rb_node *root, bool dir) {
 * Returns the black-height of the root node:
 * `cmp` returns -1 if lhs < rhs, 0 if lhs == rhs, 1 if lhs > rhs (a la strcmp)
 */
-static inline size_t
-rb_invariant (struct rb_node *root, int (*cmp)(void *lhs, void *rhs)) {
+size_t rb_invariant (struct rb_node *root, int (*cmp)(void *lhs, void *rhs)) {
 #ifndef NDEBUG
     size_t height_left, height_right;
 
@@ -64,8 +69,7 @@ rb_invariant (struct rb_node *root, int (*cmp)(void *lhs, void *rhs)) {
     return 0;
 }
 
-static inline struct rb_node *
-rb_create_node (void *data) {
+struct rb_node * rb_create_node (void *data) {
     struct rb_node *node = malloc (sizeof *node);
 
     if (!node) {
@@ -80,8 +84,7 @@ rb_create_node (void *data) {
     return node;
 }
 
-static inline struct rb_node *
-rb_insert_node (struct rb_node *root, void *data, int (*cmp)(void *, void *)) {
+struct rb_node * rb_insert_node (struct rb_node *root, void *data, int (*cmp)(void *, void *)) {
     if (!root) {
         root = rb_create_node (data);
     }
@@ -111,8 +114,7 @@ rb_insert_node (struct rb_node *root, void *data, int (*cmp)(void *, void *)) {
     return root;
 }
 
-static inline struct rb_node *
-rb_remove_balance (struct rb_node *root, bool right, bool *done) {
+struct rb_node * rb_remove_balance (struct rb_node *root, bool right, bool *done) {
     struct rb_node *parent = root;
     struct rb_node *sibling = root->rb_link[!right];
 
@@ -162,8 +164,7 @@ rb_remove_balance (struct rb_node *root, bool right, bool *done) {
     return root;
 }
 
-static inline struct rb_node *
-rb_remove_node (struct rb_node *root, void *data, int (*cmp)(void *, void *), bool *done) {
+struct rb_node * rb_remove_node (struct rb_node *root, void *data, int (*cmp)(void *, void *), bool *done) {
     if (root == NULL) {
         *done = true;
         return root;
@@ -208,8 +209,7 @@ rb_remove_node (struct rb_node *root, void *data, int (*cmp)(void *, void *), bo
     return root;
 }
 
-static inline void
-rb_remove (struct rb_tree *tree, void *data) {
+void rb_remove (struct rb_tree *tree, void *data) {
     bool done = false;
 
     tree->rb_node = rb_remove_node (tree->rb_node, data, tree->cmp, &done);
@@ -219,8 +219,7 @@ rb_remove (struct rb_tree *tree, void *data) {
     }
 }
 
-static inline void
-rb_insert (struct rb_tree *tree, void *data) {
+void rb_insert (struct rb_tree *tree, void *data) {
     tree->rb_node = rb_insert_node (tree->rb_node, data, tree->cmp);
     tree->rb_node->red = false; /* The root node is always black. */
 }

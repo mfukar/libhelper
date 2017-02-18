@@ -5,6 +5,7 @@
 #include "../libhelper/overflow.h"
 #include "../libhelper/kmp.h"
 #include "../libhelper/queue.h"
+#include "../libhelper/rbtree.h"
 
 #include "test-material.h"
 
@@ -124,19 +125,24 @@ namespace libhelperunittests {
             struct ac_result res = ac_search (&trie, "h", sizeof "h", 0);
             Assert::IsFalse (ac_search_matched (res));
         }
-        /*
-        TEST_METHOD (rb_tree) {
-            int arr[] = { 11, 14, 2, 7, 1, 15, 5, 8 };
+
+        TEST_METHOD (test_rb_tree_invariants) {
             struct rb_tree high = { 0 };
             high.cmp = intcmp;
+
+            int arr[] = { 11, 14, 2, 7, 1, 15, 5, 8 };
             for (size_t i = 0; i < sizeof arr / sizeof *arr; ++i) {
                 rb_insert (&high, &arr[i]);
             }
-            inorder (high.rb_node, 0);
+            std::stringstream output;
+            inorder (high.rb_node, 0, output);
+            Logger::WriteMessage (output.str().c_str());
             Assert::IsTrue (rb_invariant (high.rb_node, high.cmp) == 1);
+
             rb_remove (&high, &arr[6]);
-            inorder (high.rb_node, 0);
+            inorder (high.rb_node, 0, output);
+            Logger::WriteMessage (output.str ().c_str ());
             Assert::IsTrue (rb_invariant (high.rb_node, high.cmp) == 1);
-        }*/
+        }
     };
 }
