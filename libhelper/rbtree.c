@@ -1,8 +1,8 @@
 #include "rbtree.h"
 
 /**
-* Returns true if the passed node is red, false otherwise.
-*/
+ * Returns true if the passed node is red, false otherwise.
+ */
 bool is_red (struct rb_node *node) {
     return node && node->red;
 }
@@ -26,10 +26,10 @@ struct rb_node * rotate_double (struct rb_node *root, bool dir) {
 }
 
 /**
-* Check the invariants of a red-black tree.
-* Returns the black-height of the root node:
-* `cmp` returns -1 if lhs < rhs, 0 if lhs == rhs, 1 if lhs > rhs (a la strcmp)
-*/
+ * Check the invariants of a red-black tree.
+ * Returns the black-height of the root node:
+ * `cmp` returns -1 if lhs < rhs, 0 if lhs == rhs, 1 if lhs > rhs (a la strcmp)
+ */
 size_t rb_invariant (struct rb_node *root, int (*cmp)(void *lhs, void *rhs)) {
     size_t height_left, height_right;
 
@@ -47,12 +47,12 @@ size_t rb_invariant (struct rb_node *root, int (*cmp)(void *lhs, void *rhs)) {
     height_right = rb_invariant (rh, cmp);
 
     /* A red-black tree is a binary tree. Is this one?
-    * We must have:
-    *   - lh->data < root->data
-    *   - rh->data > root->data
-    */
+     * We must have:
+     *   - lh->data < root->data
+     *   - rh->data > root->data
+     */
     if (lh && cmp (root->data, lh->data) <= 0
-        || rh && cmp (root->data, rh->data) >= 0) {
+    ||  rh && cmp (root->data, rh->data) >= 0) {
         return 0;
     }
 
