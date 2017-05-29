@@ -248,4 +248,4 @@ ModelManifest.xml
 .fake/
 
 # VS Code plugin configuration:
-.clang-complete
+.clang_complete
