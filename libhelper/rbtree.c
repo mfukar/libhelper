@@ -39,7 +39,7 @@ size_t rb_invariant (struct rb_node *root, int (*cmp)(void *lhs, void *rhs)) {
     struct rb_node *rh = root->rb_link[1];
 
     if (is_red (root)
-        && (is_red (lh) || is_red (rh))) {
+    && (is_red (lh) || is_red (rh))) {
         return 0;
     }
 
