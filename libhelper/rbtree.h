@@ -11,7 +11,7 @@ extern "C" {
 
 struct rb_node {
     struct rb_node *parent;
-    struct rb_node *rb_link[2]; /** Exploit the symmetry here to make the code more concise */
+    struct rb_node *rb_link[2]; /**< 0 for left, 1 for right - the symmetry here makes the code more concise */
     void *data; /** XXX How about an intrusive version instead? */
     bool red;
 };
@@ -35,11 +35,6 @@ struct rb_node * rotate_single (struct rb_node *root, bool dir);
 
 struct rb_node * rotate_double (struct rb_node *root, bool dir);
 
-/**
- * Check the invariants of a red-black tree.
- * Returns the black-height of the root node:
- * `cmp` returns -1 if lhs < rhs, 0 if lhs == rhs, 1 if lhs > rhs (a la strcmp)
- */
 size_t rb_invariant (struct rb_node *root, int (*cmp)(void *lhs, void *rhs));
 
 struct rb_node * rb_create_node (void *data);

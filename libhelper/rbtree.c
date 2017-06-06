@@ -1,4 +1,7 @@
-#include "rbtree.h"
+﻿#include "rbtree.h"
+
+#define LEFT false
+#define RIGHT true
 
 /**
  * Returns true if the passed node is red, false otherwise.
@@ -7,6 +10,9 @@ bool is_red (struct rb_node *node) {
     return node && node->red;
 }
 
+/**
+ * Perform a single rotation in either direction; 'false' for left, 'true' for right.
+ */
 struct rb_node * rotate_single (struct rb_node *root, bool dir) {
     struct rb_node *save = root->rb_link[!dir];
 
@@ -19,6 +25,9 @@ struct rb_node * rotate_single (struct rb_node *root, bool dir) {
     return save;
 }
 
+/**
+ * Perform a double rotation in either direction: 'false' for left, 'true' for right.
+ */
 struct rb_node * rotate_double (struct rb_node *root, bool dir) {
     root->rb_link[!dir] = rotate_single (root->rb_link[!dir], !dir);
 
@@ -26,8 +35,9 @@ struct rb_node * rotate_double (struct rb_node *root, bool dir) {
 }
 
 /**
- * Check the invariants of a red-black tree.
- * Returns the black-height of the root node:
+ * Check the invariants of a red-black tree. Returns the black-height
+ * of the root node, or 0 for an invalid red-black tree.
+ *
  * `cmp` returns -1 if lhs < rhs, 0 if lhs == rhs, 1 if lhs > rhs (a la strcmp)
  */
 size_t rb_invariant (struct rb_node *root, int (*cmp)(void *lhs, void *rhs)) {
@@ -68,6 +78,10 @@ size_t rb_invariant (struct rb_node *root, int (*cmp)(void *lhs, void *rhs)) {
     return 0;
 }
 
+/**
+ * Create a red-black tree node, and return a pointer to it.
+ * Returns NULL if memory allocation fails.
+ */
 struct rb_node * rb_create_node (void *data) {
     struct rb_node *node = malloc (sizeof *node);
 
@@ -83,12 +97,16 @@ struct rb_node * rb_create_node (void *data) {
     return node;
 }
 
+/**
+ * Insert an item inside a red-black tree. Helper function to handle rebalancing.
+ * Returns the (new) root of the tree, or NULL if memory allocation fails.
+ */
 struct rb_node * rb_insert_node (struct rb_node *root, void *data, int (*cmp)(void *, void *)) {
     if (!root) {
         root = rb_create_node (data);
     }
 
-    if (data != root->data) {
+    if (root && data != root->data) {
         bool right = cmp (root->data, data) < 0;
         root->rb_link[right] = rb_insert_node (root->rb_link[right], data, cmp);
 
@@ -113,6 +131,14 @@ struct rb_node * rb_insert_node (struct rb_node *root, void *data, int (*cmp)(vo
     return root;
 }
 
+/**
+ * Handle all the cases that need rebalancing, after removing a black node:
+ * 1. Balancing by recoloring red
+ * 2. Sibling is black and either or both its children red
+ * 3. Sibling is red → single rotation, recolor black, and recolor former sibling's right child to red
+ *
+ * Returns the new root of the (sub)tree.
+ */
 struct rb_node * rb_remove_balance (struct rb_node *root, bool right, bool *done) {
     struct rb_node *parent = root;
     struct rb_node *sibling = root->rb_link[!right];
@@ -163,6 +189,12 @@ struct rb_node * rb_remove_balance (struct rb_node *root, bool right, bool *done
     return root;
 }
 
+/**
+ * Remove an item from a red-black tree. Helper function to handle tree rebalancing,
+ * without exposing a complicated API to the customers.
+ *
+ * Returns the new root node of the tree.
+ */
 struct rb_node * rb_remove_node (struct rb_node *root, void *data, int (*cmp)(void *, void *), bool *done) {
     if (root == NULL) {
         *done = true;
@@ -208,6 +240,9 @@ struct rb_node * rb_remove_node (struct rb_node *root, void *data, int (*cmp)(vo
     return root;
 }
 
+/**
+ * Remove a given item from a tree.
+ */
 void rb_remove (struct rb_tree *tree, void *data) {
     bool done = false;
 
@@ -218,6 +253,9 @@ void rb_remove (struct rb_tree *tree, void *data) {
     }
 }
 
+/**
+ * Insert a given item into a red-black tree.
+ */
 void rb_insert (struct rb_tree *tree, void *data) {
     tree->rb_node = rb_insert_node (tree->rb_node, data, tree->cmp);
     tree->rb_node->red = false; /* The root node is always black. */
