@@ -132,52 +132,51 @@ namespace libhelperunittests {
          */
         TEST_METHOD (test_rb_is_red) {
             long dummy_data = 6;
-            struct rb_node red_root = {
-                .parent = NULL,
-                .rb_link = {NULL, NULL},
-                .data = &dummy_data,
-                .red = true
-            };
+            struct rb_node red_root;
+            red_root.parent = NULL;
+            red_root.rb_link[0] = NULL;
+            red_root.rb_link[1] = NULL;
+            red_root.data = &dummy_data;
+            red_root.red = true;
             Assert::IsTrue (is_red (&red_root));
 
-            struct rb_node black_root = {
-                .parent = NULL,
-                .rb_link = {NULL, NULL},
-                .data = &dummy_data,
-                .red = false
-            };
+            struct rb_node black_root;
+            black_root.parent = NULL;
+            black_root.rb_link[0] = NULL;
+            black_root.rb_link[1] = NULL;
+            black_root.data = &dummy_data;
+            black_root.red = false;
             Assert::IsFalse (is_red (&black_root));
 
-            struct rb_node red_level1_leaf = {
-                .parent = &black_root,
-                .rb_link = {NULL, NULL},
-                .data = &dummy_data,
-                .red = true
-            };
+            struct rb_node red_level1_leaf;
+            red_level1_leaf.parent = &black_root;
+            red_level1_leaf.rb_link[0] = NULL;
+            red_level1_leaf.rb_link[1] = NULL;
+            red_level1_leaf.data = &dummy_data;
+            red_level1_leaf.red = true;
             Assert::IsTrue (is_red (&red_level1_leaf));
 
-            struct rb_node black_level1_leaf = {
-                .parent = &red_root,
-                .rb_link = {NULL, NULL},
-                .data = &dummy_data,
-                .red = false
-            };
+            struct rb_node black_level1_leaf;
+            black_level1_leaf.parent = &red_root;
+            black_level1_leaf.rb_link[0] = NULL;
+            black_level1_leaf.rb_link[1] = NULL;
+            black_level1_leaf.data = &dummy_data;
+            black_level1_leaf.red = false;
             Assert::IsFalse (is_red (&black_level1_leaf));
 
-            struct rb_node red_level1_inner = {
-                .parent = &black_root,
-                .rb_link = {&black_level1_leaf, NULL},
-                .data = &dummy_data,
-                .red = true
-            };
+            struct rb_node red_level1_inner;
+            red_level1_inner.parent = &black_root;
+            red_level1_inner.rb_link[0] = &black_level1_leaf;
+            red_level1_inner.rb_link[1] = NULL;
+            red_level1_inner.data = &dummy_data;
+            red_level1_inner.red = true;
             Assert::IsTrue (is_red (&red_level1_inner));
 
-            struct rb_node black_level1_inner = {
-                .parent = &red_root,
-                .rb_link = {NULL, &red_level1_leaf},
-                .data = &dummy_data,
-                .red = false
-            };
+            struct rb_node black_level1_inner;
+            black_level1_inner.parent = &red_root;
+            black_level1_inner.rb_link[1] = &red_level1_leaf;
+            black_level1_inner.data = &dummy_data;
+            black_level1_inner.red = false;
             Assert::IsFalse (is_red (&black_level1_inner));
         }
 
@@ -202,8 +201,8 @@ namespace libhelperunittests {
             high.cmp = intcmp;
 
             for (size_t iteration = 0; iteration < 10000; ++iteration) {
-                op = ops_dist[generator];
-                dat = data_dist[generator];
+                int op = ops_dist(generator);
+                int dat = data_dist(generator);
                 /* TBD */
             }
 
