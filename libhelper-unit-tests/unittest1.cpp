@@ -126,9 +126,86 @@ namespace libhelperunittests {
             Assert::IsFalse (ac_search_matched (res));
         }
 
+        /*
+         * The spec of is_red says it must return true when
+         * it is passed a red node, and false in every other case:
+         */
+        TEST_METHOD (test_rb_is_red) {
+            long dummy_data = 6;
+            struct rb_node red_root = {
+                .parent = NULL,
+                .rb_link = {NULL, NULL},
+                .data = &dummy_data,
+                .red = true
+            };
+            Assert::IsTrue (is_red (&red_root));
+
+            struct rb_node black_root = {
+                .parent = NULL,
+                .rb_link = {NULL, NULL},
+                .data = &dummy_data,
+                .red = false
+            };
+            Assert::IsFalse (is_red (&black_root));
+
+            struct rb_node red_level1_leaf = {
+                .parent = &black_root,
+                .rb_link = {NULL, NULL},
+                .data = &dummy_data,
+                .red = true
+            };
+            Assert::IsTrue (is_red (&red_level1_leaf));
+
+            struct rb_node black_level1_leaf = {
+                .parent = &red_root,
+                .rb_link = {NULL, NULL},
+                .data = &dummy_data,
+                .red = false
+            };
+            Assert::IsFalse (is_red (&black_level1_leaf));
+
+            struct rb_node red_level1_inner = {
+                .parent = &black_root,
+                .rb_link = {&black_level1_leaf, NULL},
+                .data = &dummy_data,
+                .red = true
+            };
+            Assert::IsTrue (is_red (&red_level1_inner));
+
+            struct rb_node black_level1_inner = {
+                .parent = &red_root,
+                .rb_link = {NULL, &red_level1_leaf},
+                .data = &dummy_data,
+                .red = false
+            };
+            Assert::IsFalse (is_red (&black_level1_inner));
+        }
+
+        /* Before we test the rest of the RB-tree implementation,
+         * we must test the function asserting it tests a RB-tree's
+         * properties: */
+        TEST_METHOD (test_rb_invariants_are_evaluated_correctly) {
+        }
+
+        /**
+         * Generate 10000 RB-tree ops at random,
+         * and perform them with a random selection of item(s),
+         * RB-tree invariants must hold at every step:
+         */
         TEST_METHOD (test_rb_tree_invariants) {
-            struct rb_tree high = { 0 };
+            std::list<int> nodes_in_order;
+            std::random_device rd;
+            std::mt19937 generator(rd());
+            std::uniform_int_distribution<int> ops_dist(0, 1);
+            std::uniform_int_distribution<int> data_dist(0, INT_MAX);
+            struct rb_tree high = {0};
             high.cmp = intcmp;
+
+            for (size_t iteration = 0; iteration < 10000; ++iteration) {
+                op = ops_dist[generator];
+                dat = data_dist[generator];
+                /* TBD */
+            }
 
             int arr[] = { 11, 14, 2, 7, 1, 15, 5, 8 };
             for (size_t i = 0; i < sizeof arr / sizeof *arr; ++i) {
