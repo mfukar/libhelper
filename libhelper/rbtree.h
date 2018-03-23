@@ -23,6 +23,10 @@ struct rb_tree {
 
 #define rb_parent(r)   ((struct rb_node *) (r)->parent)
 
+void rb_remove (struct rb_tree *tree, void *data);
+
+void rb_insert (struct rb_tree *tree, void *data);
+
 bool is_red (struct rb_node *node);
 
 /**
@@ -44,10 +48,6 @@ struct rb_node * rb_insert_node (struct rb_node *root, void *data, int (*cmp)(vo
 struct rb_node * rb_remove_balance (struct rb_node *root, bool right, bool *done);
 
 struct rb_node * rb_remove_node (struct rb_node *root, void *data, int (*cmp)(void *, void *), bool *done);
-
-void rb_remove (struct rb_tree *tree, void *data);
-
-void rb_insert (struct rb_tree *tree, void *data);
 
 #ifdef __cplusplus
 }
