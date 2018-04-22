@@ -7,3 +7,4 @@
 #include <cstring>
 #include <random>
 #include <list>
+#include <functional>
