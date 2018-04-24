@@ -187,38 +187,70 @@ namespace libhelperunittests {
         }
 
         /**
-         * Generate 10000 RB-tree ops at random,
+         * Generate RB-tree ops at random,
          * and perform them with a random selection of item(s),
          * RB-tree invariants must hold at every step:
+         *
+         * If in trouble, uncomment the logging code.
          */
         TEST_METHOD (test_rb_tree_invariants) {
-            std::list<int> nodes_in_order;
             std::random_device rd;
-            std::mt19937 generator(rd());
-            std::uniform_int_distribution<int> ops_dist(0, 1);
+            auto seed = rd ();
+            /*
+            char buf[128];
+            snprintf (buf, sizeof buf, "Seed: %d\n", seed);
+            Logger::WriteMessage (buf);
+            */
+            std::mt19937 generator(seed);
+            std::bernoulli_distribution ops_dist(0.75); /* .75 of all ops to be rb_insert */
             std::uniform_int_distribution<int> data_dist(0, INT_MAX);
-            struct rb_tree high = {0};
-            high.cmp = intcmp;
 
-            for (size_t iteration = 0; iteration < 10000; ++iteration) {
-                int op = ops_dist(generator);
-                int dat = data_dist(generator);
-                /* TBD */
+            /* Kept low because running on other people's CPUs, feel free to stress: */
+            const size_t testiterations = 10000;
+
+            for (size_t idx = 0; idx < testiterations; ++idx) {
+                const size_t nops = 10000;
+
+                int nodes_in_order[nops] = {0};
+                struct rb_tree high;
+                high.rb_node = NULL;
+                high.cmp = intcmp;
+
+                std::stringstream expected_output;
+                expected_output << "Iteration: " << idx << std::endl;
+
+                for (size_t iteration = 0; iteration < nops; ++iteration) {
+                    nodes_in_order[iteration] = data_dist (generator);
+                    auto op = ops_dist (generator) ? rb_insert : rb_remove;
+                    /*
+                    if (op == rb_insert) {
+                        expected_output << nodes_in_order[iteration] << ",";
+                    }
+                    */
+                    op (&high, &nodes_in_order[iteration]);
+                }
+                /*
+                Logger::WriteMessage (expected_output.str ().c_str ());
+
+                std::stringstream actual_levelorder_output;
+                levelorder (high.rb_node, actual_levelorder_output);
+                Logger::WriteMessage (actual_levelorder_output.str ().c_str ());
+                */
+                auto treesize = rb_size (high.rb_node);
+                /* the maximum number of black nodes in any root-null path is log2(n+1) */
+                auto max_black_height = static_cast<unsigned long>(::log2 (treesize + 1));
+                /* the minimum black-height is at least half the height of the tree: */
+                auto min_black_height = static_cast<unsigned long>(::log2 (treesize) / 2);
+                auto actual_black_height = rb_invariant (high.rb_node, high.cmp);
+                std::wstringstream output;
+                output << "Size: " << treesize
+                       << " Expected min/max: [" << min_black_height << ", " << max_black_height << "]"
+                       << " Actual: " << actual_black_height;
+                Logger::WriteMessage (output.str ().c_str ());
+                Assert::IsTrue (treesize == 0
+                             || min_black_height < actual_black_height && actual_black_height <= max_black_height,
+                                output.str().c_str());
             }
-
-            int arr[] = { 11, 14, 2, 7, 1, 15, 5, 8 };
-            for (size_t i = 0; i < sizeof arr / sizeof *arr; ++i) {
-                rb_insert (&high, &arr[i]);
-            }
-            std::stringstream output;
-            inorder (high.rb_node, 0, output);
-            Logger::WriteMessage (output.str().c_str());
-            Assert::IsTrue (rb_invariant (high.rb_node, high.cmp) == 1);
-
-            rb_remove (&high, &arr[6]);
-            inorder (high.rb_node, 0, output);
-            Logger::WriteMessage (output.str ().c_str ());
-            Assert::IsTrue (rb_invariant (high.rb_node, high.cmp) == 1);
         }
     };
 }
