@@ -23,14 +23,14 @@ void levelorder (struct rb_node* root, std::stringstream & out) {
 
     unsigned level = 0;
     while (true) {
-        int levelsize = q.size ();
+        auto levelsize = q.size ();
         if (levelsize == 0) break;
 
         out << "Level: " << level << "\n";
         while (levelsize > 0) {
             auto node = q.front ();
             int *datum = (int *)node->data;
-            out << "Node [colour: " << node->red << " data: " << *datum << "]\n";
+            out << "Node [colour: " << (node->red ? "red  ":"black") << " data: " << *datum << "]\n";
             q.pop ();
 
             if (node->rb_link[0]) {
