@@ -27,6 +27,10 @@ void rb_remove (struct rb_tree *tree, void *data);
 
 void rb_insert (struct rb_tree *tree, void *data);
 
+void rb_destroy (struct rb_tree *tree);
+
+size_t rb_size (struct rb_node *root);
+
 bool is_red (struct rb_node *node);
 
 /**

@@ -266,3 +266,22 @@ void rb_insert (struct rb_tree *tree, void *data) {
     tree->rb_node = rb_insert_node (tree->rb_node, data, tree->cmp);
     tree->rb_node->red = false; /* The root node is always black. */
 }
+
+void rb_destroy (struct rb_tree *tree) {
+    /* TODO */
+    return;
+}
+
+void _rb_size (struct rb_node *root, size_t *size) {
+    if (!root) return;
+
+    ++*size;
+    _rb_size (root->rb_link[0], size);
+    _rb_size (root->rb_link[1], size);
+}
+
+size_t rb_size (struct rb_node *root) {
+    size_t nnodes = 0;
+    _rb_size (root, &nnodes);
+    return nnodes;
+}
