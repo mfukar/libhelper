@@ -40,17 +40,18 @@ struct rb_node * rotate_double (struct rb_node *root, bool dir) {
  *
  * `cmp` returns -1 if lhs < rhs, 0 if lhs == rhs, 1 if lhs > rhs (a la strcmp)
  */
+#define _INVALID_RB_TREE -1
 size_t rb_invariant (struct rb_node *root, int (*cmp)(void *lhs, void *rhs)) {
     size_t height_left, height_right;
 
-    if (!root) return 1;
+    if (!root) return 0;
 
     struct rb_node *lh = root->rb_link[0];
     struct rb_node *rh = root->rb_link[1];
 
     if (is_red (root)
     && (is_red (lh) || is_red (rh))) {
-        return 0;
+        return _INVALID_RB_TREE;
     }
 
     height_left = rb_invariant (lh, cmp);
@@ -63,20 +64,21 @@ size_t rb_invariant (struct rb_node *root, int (*cmp)(void *lhs, void *rhs)) {
      */
     if (lh && cmp (root->data, lh->data) <= 0
     ||  rh && cmp (root->data, rh->data) >= 0) {
-        return 0;
+        return _INVALID_RB_TREE;
     }
 
     /* Every path from a given node to any of its leaf nodes contains the same number of black nodes: */
-    if (height_left != 0 && height_right != 0 && height_left != height_right) {
-        return 0;
+    if (height_left != _INVALID_RB_TREE && height_right != _INVALID_RB_TREE && height_left != height_right) {
+        return _INVALID_RB_TREE;
     }
 
-    if (lh != 0 && rh != 0) {
-        return is_red (root) ? height_left : height_left + 1;
+    if (height_left == _INVALID_RB_TREE || height_right == _INVALID_RB_TREE) {
+        return _INVALID_RB_TREE;
     }
 
-    return 0;
+    return is_red (root) ? height_left : height_left + 1;
 }
+#undef _INVALID_RB_TREE
 
 /**
  * Create a red-black tree node, and return a pointer to it.
