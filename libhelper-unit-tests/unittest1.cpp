@@ -194,19 +194,22 @@ namespace libhelperunittests {
          * If in trouble, uncomment the logging code.
          */
         TEST_METHOD (test_rb_tree_invariants) {
+            std::wstringstream assert_output;
+
             std::random_device rd;
             auto seed = rd ();
-            /*
+
             char buf[128];
-            snprintf (buf, sizeof buf, "Seed: %d\n", seed);
+            snprintf (buf, sizeof buf, "Seed: %u\n", seed);
             Logger::WriteMessage (buf);
-            */
+
             std::mt19937 generator(seed);
             std::bernoulli_distribution ops_dist(0.75); /* .75 of all ops to be rb_insert */
             std::uniform_int_distribution<int> data_dist(0, INT_MAX);
 
-            /* Kept low because running on other people's CPUs, feel free to stress: */
-            const size_t testiterations = 10000;
+            /* Kept low because running on other people's CPUs,
+               and VSTS has limits. Feel free to stress yourself: */
+            const size_t testiterations = 1000;
 
             for (size_t idx = 0; idx < testiterations; ++idx) {
                 const size_t nops = 10000;
@@ -215,10 +218,10 @@ namespace libhelperunittests {
                 struct rb_tree high;
                 high.rb_node = NULL;
                 high.cmp = intcmp;
-
+                /*
                 std::stringstream expected_output;
                 expected_output << "Iteration: " << idx << std::endl;
-
+                */
                 for (size_t iteration = 0; iteration < nops; ++iteration) {
                     nodes_in_order[iteration] = data_dist (generator);
                     auto op = ops_dist (generator) ? rb_insert : rb_remove;
@@ -242,15 +245,16 @@ namespace libhelperunittests {
                 /* the minimum black-height is at least half the height of the tree: */
                 auto min_black_height = static_cast<unsigned long>(::log2 (treesize) / 2);
                 auto actual_black_height = rb_invariant (high.rb_node, high.cmp);
-                std::wstringstream output;
-                output << "Size: " << treesize
-                       << " Expected min/max: [" << min_black_height << ", " << max_black_height << "]"
-                       << " Actual: " << actual_black_height;
-                Logger::WriteMessage (output.str ().c_str ());
+
+                assert_output << "Size: " << treesize
+                       << " Expected: [" << min_black_height << ", " << max_black_height << "]"
+                       << " Actual: " << actual_black_height << std::endl;
+
                 Assert::IsTrue (treesize == 0
                              || min_black_height < actual_black_height && actual_black_height <= max_black_height,
-                                output.str().c_str());
+                                assert_output.str().c_str());
             }
+            // Logger::WriteMessage (assert_output.str ().c_str ());
         }
     };
 }
