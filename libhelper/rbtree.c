@@ -108,23 +108,27 @@ struct rb_node * rb_insert_node (struct rb_node *root, void *data, int (*cmp)(vo
         root = rb_create_node (data);
     }
 
-    if (root && data != root->data) {
-        bool right = cmp (root->data, data) < 0;
-        root->rb_link[right] = rb_insert_node (root->rb_link[right], data, cmp);
 
-        /* Now rebalance the tree: */
-        if (is_red (root->rb_link[right])) {
-            if (is_red (root->rb_link[!right])) {
-                root->red = true;
-                root->rb_link[0]->red = false;
-                root->rb_link[1]->red = false;
-            }
-            else {
-                if (is_red (root->rb_link[right]->rb_link[right])) {
-                    root = rotate_single (root, !right);
+    if (root) {
+        int diff = cmp (root->data, data);
+        if (diff != 0) {
+            bool right = diff < 0;
+            root->rb_link[right] = rb_insert_node (root->rb_link[right], data, cmp);
+
+            /* Now rebalance the tree: */
+            if (is_red (root->rb_link[right])) {
+                if (is_red (root->rb_link[!right])) {
+                    root->red = true;
+                    root->rb_link[0]->red = false;
+                    root->rb_link[1]->red = false;
                 }
-                else if (is_red (root->rb_link[right]->rb_link[!right])) {
-                    root = rotate_double (root, !right);
+                else {
+                    if (is_red (root->rb_link[right]->rb_link[right])) {
+                        root = rotate_single (root, !right);
+                    }
+                    else if (is_red (root->rb_link[right]->rb_link[!right])) {
+                        root = rotate_double (root, !right);
+                    }
                 }
             }
         }
