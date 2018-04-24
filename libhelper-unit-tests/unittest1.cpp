@@ -199,9 +199,7 @@ namespace libhelperunittests {
             std::random_device rd;
             auto seed = rd ();
 
-            char buf[128];
-            snprintf (buf, sizeof buf, "Seed: %u\n", seed);
-            Logger::WriteMessage (buf);
+            assert_output << "Seed: " << seed << std::endl;
 
             std::mt19937 generator(seed);
             std::bernoulli_distribution ops_dist(0.75); /* .75 of all ops to be rb_insert */
