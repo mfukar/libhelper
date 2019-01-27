@@ -36,7 +36,7 @@ bool ac_trie_init (struct ac_trie *trie);
 
 struct ac_state * ac_state_add (struct ac_state *state, char character);
 
-bool ac_trie_insert (struct ac_trie *trie, char *string);
+bool ac_trie_insert (struct ac_trie *trie, const char *string);
 
 struct ff_queue_element {
 	struct ac_state *s;
@@ -54,7 +54,7 @@ struct ac_result {
 
 bool ac_search_matched (struct ac_result res);
 
-struct ac_result ac_search (struct ac_trie *trie, char *text, size_t ntext, size_t offset);
+struct ac_result ac_search (struct ac_trie *trie, const char *text, size_t ntext, size_t offset);
 
 /**
  * Scans the entire buffer pointed to by text, and returns the longest match, if found.

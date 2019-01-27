@@ -33,7 +33,7 @@ struct ac_state * ac_state_add (struct ac_state *state, char character) {
     return next;
 }
 
-bool ac_trie_insert (struct ac_trie *trie, char *string) {
+bool ac_trie_insert (struct ac_trie *trie, const char *string) {
     if (trie == NULL || string == NULL) {
         return false;
     }
@@ -67,7 +67,7 @@ bool ac_build_failure_function (struct ac_trie *trie) {
     dequeue (q);
 
     for (size_t idx = 0; idx < ARRAY_SIZE (trie->root->gotofunc); ++idx) {
-        if (trie->root->gotofunc[idx] == NULL) {
+        if (ac_next (trie->root, idx) == NULL) {
             ac_next (trie->root, idx) = trie->root;
             continue;
         }
@@ -112,7 +112,7 @@ bool ac_search_matched (struct ac_result res) {
           && res.last_state == NULL);
 }
 
-struct ac_result ac_search (struct ac_trie *trie, char *text, size_t ntext, size_t offset) {
+struct ac_result ac_search (struct ac_trie *trie, const char *text, size_t ntext, size_t offset) {
     struct ac_state *state = trie->root;
     for (size_t i = 0 + offset; i < ntext; ++i) {
         while (ac_next (state, text[i]) == NULL) {

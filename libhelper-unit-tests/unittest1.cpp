@@ -225,7 +225,9 @@ namespace libhelperunittests {
                     auto op = ops_dist (generator) ? rb_insert : rb_remove;
                     /*
                     if (op == rb_insert) {
-                        expected_output << nodes_in_order[iteration] << ",";
+                        expected_output << "I" << nodes_in_order[iteration] << ",";
+                    } else {
+                        expected_output << "D" << nodes_in_order[iteration] << ",";
                     }
                     */
                     op (&high, &nodes_in_order[iteration]);
