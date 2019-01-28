@@ -48,7 +48,7 @@ bool ac_trie_insert (struct ac_trie *trie, const char *string) {
     for (; index < length; ++index) {
         struct ac_state *next = ac_state_add (state, string[index]);
 
-        if (ac_next (state, string[index]) != next) { abort (); }
+        if (ac_next (state, string[index]) != next) { abort (); } /* XXX: Do not abort */
 
         if (next == NULL) {
             return false;

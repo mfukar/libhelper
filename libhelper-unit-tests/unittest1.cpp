@@ -72,6 +72,49 @@ namespace libhelperunittests {
             }
         }
 
+        TEST_METHOD (test_trie_structure) {
+            std::ifstream ifs ("tags.txt");
+            std::vector<std::string> tags;
+            std::string line;
+            while (std::getline (ifs, line)) {
+                tags.emplace_back (line);
+            }
+            struct ac_trie trie;
+            ac_trie_init (&trie);
+            for (auto tag : tags) {
+                Assert::IsTrue (ac_trie_insert (&trie, tag.c_str()));
+            }
+
+            std::stringstream output;
+            struct visit { bool visited; size_t depth; visit (bool v, size_t d) : visited (v), depth (d) {} };
+
+            std::queue<struct ac_state *> q;
+            std::map<struct ac_state *, struct visit *> visited;
+
+            visited[trie.root] = new visit (true, 0);
+            q.emplace (trie.root);
+            output << std::endl;
+            std::function<void(struct ac_state *)> dfs = [&](struct ac_state *s) {
+                visited[s] = new visit (true, s->depth);
+
+                for (size_t i = 0; i < 256; ++i) {
+                    if (ac_next (s, i) == nullptr) { continue; }
+
+                    output << " [" << s->depth << "]";
+
+                    output << " = 0x" << std::setfill ('0') << std::setw (2) << std::hex << i << " |";
+                    dfs (ac_next (s, i));
+                    output << std::endl;
+                    for (size_t d = 0; d < s->depth; ++d) {
+                        output << "             ";
+                    }
+                }
+            };
+            Assert::IsTrue (ac_build_failure_function (&trie)); /* BUG memory corruption */
+            dfs (trie.root);
+            Logger::WriteMessage (output.str ().c_str ());
+        }
+
         TEST_METHOD (test_trie_matches) {
             struct ac_trie trie;
             ac_trie_init (&trie);
