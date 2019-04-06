@@ -10,22 +10,28 @@ DLIST_HEAD_INIT	.\libhelper\dlist.h	21;"	d
 LEFT	.\libhelper\rbtree.c	3;"	d	file:
 PCH_H	.\ac-benchmark\pch.h	10;"	d
 RIGHT	.\libhelper\rbtree.c	4;"	d	file:
+SGLIB_QUEUE_ADD	.\libhelper\aqueue.h	28;"	d
+SGLIB_QUEUE_DELETE	.\libhelper\aqueue.h	32;"	d
+SGLIB_QUEUE_FIRST_ELEMENT	.\libhelper\aqueue.h	23;"	d
+SGLIB_QUEUE_INIT	.\libhelper\aqueue.h	20;"	d
+SGLIB_QUEUE_IS_EMPTY	.\libhelper\aqueue.h	21;"	d
+SGLIB_QUEUE_IS_FULL	.\libhelper\aqueue.h	22;"	d
 TEST_CLASS	.\libhelper-unit-tests\unittest1.cpp	/^    TEST_CLASS (UnitTest1) {$/;"	f	namespace:libhelperunittests
 WIN32_LEAN_AND_MEAN	.\libhelper\stdafx.h	5;"	d
 WITH_FILE	.\libhelper\preprocessor.h	33;"	d
 WITH_MALLOC	.\libhelper\preprocessor.h	54;"	d
 _INVALID_RB_TREE	.\libhelper\rbtree.c	43;"	d	file:
 _INVALID_RB_TREE	.\libhelper\rbtree.c	81;"	d	file:
+__queue_add_next	.\libhelper\aqueue.h	24;"	d
 _dlist_delete	.\libhelper\dlist.h	/^static inline void _dlist_delete(struct dlist *prev, struct dlist *next) {$/;"	f
 _dlist_insert	.\libhelper\dlist.h	/^static inline void _dlist_insert(struct dlist *elem, struct dlist *prev, struct dlist *next) {$/;"	f
 _rb_size	.\libhelper\rbtree.c	/^void _rb_size (struct rb_node *root, size_t *size) {$/;"	f
 ac_6c7055133686455382b48f901be5abc6	.\libhelper\aho-corasick.h	2;"	d
 ac_build_failure_function	.\libhelper\aho-corasick.c	/^bool ac_build_failure_function (struct ac_trie *trie) {$/;"	f
-ac_depth	.\libhelper\aho-corasick.h	29;"	d
-ac_fail	.\libhelper\aho-corasick.h	31;"	d
-ac_is_terminal	.\libhelper\aho-corasick.h	33;"	d
-ac_next	.\libhelper\aho-corasick.h	30;"	d
-ac_output	.\libhelper\aho-corasick.h	32;"	d
+ac_depth	.\libhelper\aho-corasick.h	28;"	d
+ac_fail	.\libhelper\aho-corasick.h	30;"	d
+ac_next	.\libhelper\aho-corasick.h	29;"	d
+ac_output	.\libhelper\aho-corasick.h	31;"	d
 ac_result	.\libhelper\aho-corasick.h	/^struct ac_result {$/;"	s
 ac_search	.\libhelper\aho-corasick.c	/^struct ac_result ac_search (struct ac_trie *trie, const char *text, size_t ntext, size_t offset) {$/;"	f
 ac_search_longest	.\libhelper\aho-corasick.c	/^struct ac_result ac_search_longest (struct ac_trie *trie, char *text, size_t ntext, size_t offset) {$/;"	f
@@ -49,15 +55,6 @@ crc32tab	.\libhelper\hash.h	/^static const uint32_t crc32tab[] = {$/;"	v
 data	.\libhelper\bytes.h	/^	const unsigned char *data;$/;"	m	struct:__anon1
 data	.\libhelper\rbtree.h	/^    void *data; \/** XXX How about an intrusive version instead? *\/$/;"	m	struct:rb_node
 depth	.\libhelper\aho-corasick.h	/^    size_t depth;$/;"	m	struct:ac_state
-dequeue	.\libhelper\queue.h	/^typedef struct dlist dequeue;$/;"	t	typeref:struct:dlist
-dequeue	.\libhelper\queue.h	12;"	d
-dequeue_data	.\libhelper\queue.h	15;"	d
-dequeue_enqueue	.\libhelper\queue.h	17;"	d
-dequeue_is_empty	.\libhelper\queue.h	14;"	d
-dequeue_peek	.\libhelper\queue.h	16;"	d
-dequeue_pop_front	.\libhelper\queue.h	/^dequeue_pop_front (dequeue *queue) {$/;"	f
-dequeue_reset	.\libhelper\queue.h	13;"	d
-display_ac_trie	.\libhelper-unit-tests\test-material.h	/^void display_ac_trie (struct ac_state *root, std::stringstream &t, char *output, size_t level) {$/;"	f
 dlist	.\libhelper\dlist.h	/^struct dlist {$/;"	s
 dlist_959d884c829d4e6ca0462bf53af52923	.\libhelper\dlist.h	2;"	d
 dlist_delete	.\libhelper\dlist.h	/^static inline void dlist_delete(struct dlist *entry) {$/;"	f
@@ -79,7 +76,6 @@ dlist_prepend	.\libhelper\dlist.h	/^static inline void dlist_prepend(struct dlis
 dlist_replace	.\libhelper\dlist.h	/^static inline void dlist_replace(struct dlist *old_entry, struct dlist *new_entry) {$/;"	f
 end	.\libhelper\aho-corasick.h	/^	size_t end;$/;"	m	struct:ac_result
 failure	.\libhelper\aho-corasick.h	/^    struct ac_state *failure;$/;"	m	struct:ac_state	typeref:struct:ac_state::ac_state
-ff_queue_element	.\libhelper\aho-corasick.h	/^struct ff_queue_element {$/;"	s
 fnv	.\libhelper\hash.h	/^static inline uint32_t fnv (const char * buffer, size_t len) {$/;"	f
 gotofunc	.\libhelper\aho-corasick.h	/^    struct ac_state *gotofunc[256];$/;"	m	struct:ac_state	typeref:struct:ac_state::ac_state
 hash_5a6eee6471de4ef08dfc5d54c1b0d2a5	.\libhelper\hash.h	17;"	d
@@ -97,7 +93,6 @@ last_state	.\libhelper\aho-corasick.h	/^	struct ac_state *last_state;$/;"	m	stru
 length	.\libhelper\bytes.h	/^	size_t length;$/;"	m	struct:__anon1
 levelorder	.\libhelper-unit-tests\test-material.h	/^void levelorder (struct rb_node* root, std::stringstream & out) {$/;"	f
 libhelperunittests	.\libhelper-unit-tests\unittest1.cpp	/^namespace libhelperunittests {$/;"	n	file:
-list	.\libhelper\aho-corasick.h	/^	dequeue list;$/;"	m	struct:ff_queue_element
 main	.\ac-benchmark\ac-benchmark.cpp	/^int main (int argc, char *argv[]) {$/;"	f
 memtok	.\libhelper\memtok.c	/^bytes_t memtok (const void * restrict s, size_t length, const char * restrict delim, bytes_t * restrict save_ptr) {$/;"	f
 memtok_3b849c5f87bd41179e328e606f06da9c	.\libhelper\memtok.h	2;"	d
@@ -113,7 +108,7 @@ overflow_86c759c767f942429a1473c63a3545b0	.\libhelper\overflow.h	2;"	d
 parent	.\libhelper\rbtree.h	/^    struct rb_node *parent;$/;"	m	struct:rb_node	typeref:struct:rb_node::rb_node
 preprocessor_8c9e86e0afb24d149a77c00cfb7adfb2	.\libhelper\preprocessor.h	17;"	d
 prev	.\libhelper\dlist.h	/^    struct dlist *next, *prev;$/;"	m	struct:dlist	typeref:struct:dlist::
-queue_2e4f3b0fa3304dd990755cfa2c99cab1	.\libhelper\queue.h	2;"	d
+queue_2e4f3b0fa3304dd990755cfa2c99cab1	.\libhelper\aqueue.h	2;"	d
 rb_create_node	.\libhelper\rbtree.c	/^struct rb_node * rb_create_node (void *data) {$/;"	f
 rb_destroy	.\libhelper\rbtree.c	/^void rb_destroy (struct rb_tree *tree) {$/;"	f
 rb_insert	.\libhelper\rbtree.c	/^void rb_insert (struct rb_tree *tree, void *data) {$/;"	f
@@ -134,7 +129,6 @@ restrict	.\libhelper\stdafx.h	8;"	d
 root	.\libhelper\aho-corasick.h	/^    struct ac_state *root;$/;"	m	struct:ac_trie	typeref:struct:ac_trie::ac_state
 rotate_double	.\libhelper\rbtree.c	/^struct rb_node * rotate_double (struct rb_node *root, bool dir) {$/;"	f
 rotate_single	.\libhelper\rbtree.c	/^struct rb_node * rotate_single (struct rb_node *root, bool dir) {$/;"	f
-s	.\libhelper\aho-corasick.h	/^	struct ac_state *s;$/;"	m	struct:ff_queue_element	typeref:struct:ff_queue_element::ac_state
 sl_pair	.\libhelper\slist.h	/^struct sl_pair {$/;"	s
 slist	.\libhelper\slist.h	/^typedef struct sl_pair *slist;$/;"	t	typeref:struct:sl_pair
 slist_47409c5cb0da4abeabee5d3f5aad5352	.\libhelper\slist.h	2;"	d
