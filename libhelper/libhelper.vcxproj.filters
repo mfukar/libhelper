@@ -33,9 +33,6 @@
     <ClInclude Include="aho-corasick.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="queue.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="bytes.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -58,6 +55,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="utils.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="aqueue.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

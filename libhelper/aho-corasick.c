@@ -1,4 +1,7 @@
 #include <aho-corasick.h>
+#include <aqueue.h>
+
+/* Implementation of Aho-Corasick search, as per http://cr.yp.to/bib/1975/aho.pdf */
 
 bool ac_state_init (struct ac_state *state) {
     state->id = 0;
@@ -16,8 +19,7 @@ bool ac_trie_init (struct ac_trie *trie) {
     }
     trie->nstates = 1;
 
-    ac_state_init (trie->root);
-    return true;
+    return ac_state_init (trie->root);
 }
 
 struct ac_state * ac_state_add (struct ac_state *state, char character) {
@@ -63,45 +65,55 @@ bool ac_trie_insert (struct ac_trie *trie, const char *string) {
     return true;
 }
 
+/**
+ * You can cross-ref the comments with the paper.
+ */
 bool ac_build_failure_function (struct ac_trie *trie) {
-    dequeue (q);
+    int start_index = 0, end_index = 0;
+    struct ac_state **queue = malloc(sizeof *queue * trie->nstates);
+    SGLIB_QUEUE_INIT (struct ac_state *, queue, start_index, end_index);
 
-    for (size_t idx = 0; idx < ARRAY_SIZE (trie->root->gotofunc); ++idx) {
-        if (ac_next (trie->root, idx) == NULL) {
-            ac_next (trie->root, idx) = trie->root;
+    trie->root->failure = trie->root;
+
+    for (size_t a = 0; a < ARRAY_SIZE (trie->root->gotofunc); ++a) {
+        /* For root (0), it must be that g(0, a) != 'fail' (NULL) */
+        if (ac_next (trie->root, a) == NULL) {
+            ac_next (trie->root, a) = trie->root;
             continue;
         }
+        /* The transitions to non-NULL nodes are going to be used for BFS: */
+        SGLIB_QUEUE_ADD (struct ac_state *, queue, ac_next (trie->root, a), start_index, end_index, trie->nstates);
 
-        struct ff_queue_element *qe = malloc (sizeof *qe);
-        qe->s = ac_next (trie->root, idx);
-        dequeue_enqueue (&q, &qe->list);
-
-        qe->s->failure = trie->root;
+        /* f(s) = 0 for all states of depth 1 */
+        ac_next(trie->root, a)->failure = trie->root;
     }
-
-    for (; !dequeue_is_empty (&q); ) {
-        struct ac_state *r = dequeue_data (dequeue_peek (&q), struct ff_queue_element, list)->s;
+ 
+    while (!SGLIB_QUEUE_IS_EMPTY (struct ac_state *, queue, start_index, end_index)) {
+        struct ac_state *r = SGLIB_QUEUE_FIRST_ELEMENT (struct ac_state *, queue, start_index, end_index);
 
         for (size_t a = 0; a < ARRAY_SIZE (r->gotofunc); ++a) {
             if (ac_next (r, a) == NULL) {
                 continue;
             }
 
-            struct ff_queue_element *qe = malloc (sizeof *qe);
-            qe->s = ac_next (r, a);
-            dequeue_enqueue (&q, &qe->list);
+            /* For each a, such that g(r, a) = s */
+            struct ac_state *s = ac_next (r, a);
+            /* Enqueue s for the BFS: */
+            SGLIB_QUEUE_ADD (struct ac_state *, queue, s, start_index, end_index, trie->nstates);
 
+            /* Set state = f(r) */
             struct ac_state *state = ac_fail (r);
+            /* Until g(state, a) != fail */
             while (ac_next (state, a) == NULL) {
+                /* execute the statement state = f(state)*/
                 state = ac_fail (state);
             }
-            struct ac_state *new_failure_state = ac_next (state, a);
-            qe->s->failure = new_failure_state;
+            /* Set f(s) = g(state, a) */
+            ac_fail(s) = ac_next (state, a);
         }
 
-        free (dequeue_data (dequeue_pop_front (&q), struct ff_queue_element, list));
+        SGLIB_QUEUE_DELETE (struct ac_state *, queue, start_index, end_index, trie->nstates);
     }
-
     return true;
 }
 

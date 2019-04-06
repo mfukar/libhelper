@@ -21,10 +21,11 @@ _dlist_insert	.\libhelper\dlist.h	/^static inline void _dlist_insert(struct dlis
 _rb_size	.\libhelper\rbtree.c	/^void _rb_size (struct rb_node *root, size_t *size) {$/;"	f
 ac_6c7055133686455382b48f901be5abc6	.\libhelper\aho-corasick.h	2;"	d
 ac_build_failure_function	.\libhelper\aho-corasick.c	/^bool ac_build_failure_function (struct ac_trie *trie) {$/;"	f
-ac_depth	.\libhelper\aho-corasick.h	28;"	d
-ac_fail	.\libhelper\aho-corasick.h	30;"	d
-ac_next	.\libhelper\aho-corasick.h	29;"	d
-ac_output	.\libhelper\aho-corasick.h	31;"	d
+ac_depth	.\libhelper\aho-corasick.h	29;"	d
+ac_fail	.\libhelper\aho-corasick.h	31;"	d
+ac_is_terminal	.\libhelper\aho-corasick.h	33;"	d
+ac_next	.\libhelper\aho-corasick.h	30;"	d
+ac_output	.\libhelper\aho-corasick.h	32;"	d
 ac_result	.\libhelper\aho-corasick.h	/^struct ac_result {$/;"	s
 ac_search	.\libhelper\aho-corasick.c	/^struct ac_result ac_search (struct ac_trie *trie, const char *text, size_t ntext, size_t offset) {$/;"	f
 ac_search_longest	.\libhelper\aho-corasick.c	/^struct ac_result ac_search_longest (struct ac_trie *trie, char *text, size_t ntext, size_t offset) {$/;"	f
@@ -56,6 +57,7 @@ dequeue_is_empty	.\libhelper\queue.h	14;"	d
 dequeue_peek	.\libhelper\queue.h	16;"	d
 dequeue_pop_front	.\libhelper\queue.h	/^dequeue_pop_front (dequeue *queue) {$/;"	f
 dequeue_reset	.\libhelper\queue.h	13;"	d
+display_ac_trie	.\libhelper-unit-tests\test-material.h	/^void display_ac_trie (struct ac_state *root, std::stringstream &t, char *output, size_t level) {$/;"	f
 dlist	.\libhelper\dlist.h	/^struct dlist {$/;"	s
 dlist_959d884c829d4e6ca0462bf53af52923	.\libhelper\dlist.h	2;"	d
 dlist_delete	.\libhelper\dlist.h	/^static inline void dlist_delete(struct dlist *entry) {$/;"	f
@@ -159,4 +161,5 @@ slist_split	.\libhelper\slist.h	/^static inline slist slist_split (slist list) {
 slist_tail	.\libhelper\slist.h	31;"	d
 start	.\libhelper\aho-corasick.h	/^	size_t start;$/;"	m	struct:ac_result
 tail	.\libhelper\slist.h	/^    struct sl_pair *tail;$/;"	m	struct:sl_pair	typeref:struct:sl_pair::sl_pair
+terminal	.\libhelper\aho-corasick.h	/^    bool terminal;$/;"	m	struct:ac_state
 utils_08b13f277c7649a9acb26c015786d5a7	.\libhelper\utils.h	2;"	d

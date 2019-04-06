@@ -22,5 +22,5 @@
 #include "memtok.h"
 #include "overflow.h"
 #include "preprocessor.h"
-#include "queue.h"
+#include "aqueue.h"
 #include "slist.h"

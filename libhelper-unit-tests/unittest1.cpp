@@ -4,7 +4,7 @@
 #include "../libhelper/aho-corasick.h"
 #include "../libhelper/overflow.h"
 #include "../libhelper/kmp.h"
-#include "../libhelper/queue.h"
+#include "../libhelper/aqueue.h"
 #include "../libhelper/rbtree.h"
 
 #include "test-material.h"
@@ -54,24 +54,6 @@ namespace libhelperunittests {
             Assert::IsTrue (kmp (barn, ::strlen (barn), test_fail, ::strlen (test_fail), ff2) == -1);
         }
 
-        TEST_METHOD (test_dequeue) {
-            struct ac_state s0, s1, s2;
-            s0.id = 0; s1.id = 1; s2.id = 2;
-
-            dequeue (q1);
-            ff_queue_element n0, n1, n2;
-            n0.s = &s0; n1.s = &s1; n2.s = &s2;
-            
-            dequeue_enqueue (&q1, &n0.list);
-            dequeue_enqueue (&q1, &n1.list);
-            dequeue_enqueue (&q1, &n2.list);
-
-            for (unsigned iteration = 0; !dequeue_is_empty (&q1); ++iteration) {
-                struct ff_queue_element * t = dequeue_data (dequeue_pop_front (&q1), struct ff_queue_element, list);
-                Assert::IsTrue (t->s->id == iteration);
-            }
-        }
-
         TEST_METHOD (test_trie_structure) {
             std::ifstream ifs ("tags.txt");
             std::vector<std::string> tags;
@@ -94,15 +76,17 @@ namespace libhelperunittests {
             visited[trie.root] = new visit (true, 0);
             q.emplace (trie.root);
             output << std::endl;
+
+            /* DFS, for debugging */
             std::function<void(struct ac_state *)> dfs = [&](struct ac_state *s) {
                 visited[s] = new visit (true, s->depth);
 
                 for (size_t i = 0; i < 256; ++i) {
-                    if (ac_next (s, i) == nullptr) { continue; }
+                    if (ac_next (s, i) == nullptr || visited.find(ac_next(s, i)) != visited.end()) { continue; }
 
                     output << " [" << s->depth << "]";
 
-                    output << " = 0x" << std::setfill ('0') << std::setw (2) << std::hex << i << " |";
+                    output << " = " << (char)i << " |";
                     dfs (ac_next (s, i));
                     output << std::endl;
                     for (size_t d = 0; d < s->depth; ++d) {
@@ -110,9 +94,10 @@ namespace libhelperunittests {
                     }
                 }
             };
-            Assert::IsTrue (ac_build_failure_function (&trie)); /* BUG memory corruption */
+
+            Assert::IsTrue (ac_build_failure_function (&trie));
             dfs (trie.root);
-            Logger::WriteMessage (output.str ().c_str ());
+            /*Logger::WriteMessage (output.str ().c_str ());*/
         }
 
         TEST_METHOD (test_trie_matches) {
@@ -167,6 +152,8 @@ namespace libhelperunittests {
 
             struct ac_result res = ac_search (&trie, "h", sizeof "h", 0);
             Assert::IsFalse (ac_search_matched (res));
+            res = ac_search (&trie, "he", sizeof "he", 0);
+            Assert::IsTrue (ac_search_matched (res));
         }
 
         /*
@@ -221,12 +208,6 @@ namespace libhelperunittests {
             black_level1_inner.data = &dummy_data;
             black_level1_inner.red = false;
             Assert::IsFalse (is_red (&black_level1_inner));
-        }
-
-        /* Before we test the rest of the RB-tree implementation,
-         * we must test the function asserting it tests a RB-tree's
-         * properties: */
-        TEST_METHOD (test_rb_invariants_are_evaluated_correctly) {
         }
 
         /**

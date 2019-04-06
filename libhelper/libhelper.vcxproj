@@ -163,7 +163,7 @@
     <ClInclude Include="memtok.h" />
     <ClInclude Include="overflow.h" />
     <ClInclude Include="preprocessor.h" />
-    <ClInclude Include="queue.h" />
+    <ClInclude Include="aqueue.h" />
     <ClInclude Include="rbtree.h" />
     <ClInclude Include="slist.h" />
     <ClInclude Include="stdafx.h" />
