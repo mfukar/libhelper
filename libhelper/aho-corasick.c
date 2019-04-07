@@ -71,6 +71,9 @@ bool ac_trie_insert (struct ac_trie *trie, const char *string) {
 bool ac_build_failure_function (struct ac_trie *trie) {
     int start_index = 0, end_index = 0;
     struct ac_state **queue = malloc(sizeof *queue * trie->nstates);
+    if (!queue) {
+        return false;
+    }
     SGLIB_QUEUE_INIT (struct ac_state *, queue, start_index, end_index);
 
     trie->root->failure = trie->root;
@@ -114,6 +117,8 @@ bool ac_build_failure_function (struct ac_trie *trie) {
 
         SGLIB_QUEUE_DELETE (struct ac_state *, queue, start_index, end_index, trie->nstates);
     }
+
+    free (queue);
     return true;
 }
 

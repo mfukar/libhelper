@@ -12,7 +12,7 @@
 using namespace Microsoft::VisualStudio::CppUnitTestFramework;
 
 namespace libhelperunittests {
-    TEST_CLASS (UnitTest1) {
+    TEST_CLASS (sanity_tests) {
         const char *barn = "Loremipsumdolorsitamet,consecteturadipisicingelit,seddoeiusmodtemporincididuntutlaboreetdoloremagnaaliqua.Utenimadminimveniam,quisnostrudexercitationullamcolaborisnisiutaliquipexeacommodoconsequat.Duisauteiruredolorinreprehenderitinvoluptatevelitessecillumdoloreeufugiatnullapariatur.Excepteursintoccaecatcupidatatnonproident,suntinculpaquiofficiadeseruntmollitanimidestlaborum.";
     public:
         TEST_METHOD(test_32bit_signed_addition) {
