@@ -18,7 +18,7 @@ happily accept changes supporting those.
 
 ### Microsoft Visual Studio
 
-The library is tested with Visual Studio 2015 (incl. Community edition).
+The library is tested with Visual Studio 2017 (incl. Community edition).
 
 1. Open the solution `libhelper.sln`
 2. Build the solution (press F7)
