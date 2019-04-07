@@ -36,4 +36,8 @@
   <ItemGroup>
     <None Include="cpp.hint" />
   </ItemGroup>
+  <ItemGroup>
+    <Text Include="test-tags.txt" />
+    <Text Include="..\ac-benchmark\messages.txt" />
+  </ItemGroup>
 </Project>

@@ -249,3 +249,8 @@ ModelManifest.xml
 
 # VS Code plugin configuration:
 .clang_complete
+
+# Various tags
+tags
+.cscope*
+tags.txt

@@ -55,7 +55,7 @@ namespace libhelperunittests {
         }
 
         TEST_METHOD (test_trie_structure) {
-            std::ifstream ifs ("tags.txt");
+            std::ifstream ifs ("test-tags.txt");
             std::vector<std::string> tags;
             std::string line;
             while (std::getline (ifs, line)) {
@@ -156,6 +156,48 @@ namespace libhelperunittests {
             Assert::IsTrue (ac_search_matched (res));
         }
 
+        TEST_METHOD (test_ac_microbench) {
+            std::ifstream ifs ("test-tags.txt");
+            std::vector<std::string> tags;
+            std::string line;
+            while (std::getline (ifs, line)) {
+                tags.emplace_back (line);
+            }
+            std::ifstream mfs ("messages.txt");
+            std::vector<std::string> messages;
+            while (std::getline (mfs, line)) {
+                messages.emplace_back (line);
+            }
+
+            auto preprocess_start = std::chrono::high_resolution_clock::now ();
+            struct ac_trie trie;
+            ac_trie_init (&trie);
+            for (const std::string & tag : tags) {
+                Assert::IsTrue (ac_trie_insert (&trie, tag.c_str ()));
+            }
+            ac_build_failure_function (&trie);
+            auto preprocess_end = std::chrono::high_resolution_clock::now ();
+
+            /* Micro: */
+            size_t nmatches = 0;
+            auto time_start = std::chrono::high_resolution_clock::now ();
+            for (const auto message : messages) {
+                struct ac_result res = ac_search (&trie, message.c_str (), 4, 0);
+                if (ac_search_matched (res)) ++nmatches;
+            }
+            auto time_end = std::chrono::high_resolution_clock::now ();
+            auto elapsed_time = std::chrono::duration<double, std::milli> (time_end - time_start).count ();
+            std::stringstream out;
+            out << "Preprocessing time: "
+                << std::chrono::duration<double, std::milli> (preprocess_end - preprocess_start).count ()
+                << " ms" << std::endl
+                << "Matching time     : " << elapsed_time
+                << " ms for " << messages.size () / elapsed_time / 1000 << " Mmps" << std::endl;
+
+            out << "Matches           : " << nmatches << " out of " << messages.size () << std::endl;
+            Logger::WriteMessage (out.str ().c_str ());
+        }
+
         /*
          * The spec of is_red says it must return true when
          * it is passed a red node, and false in every other case:
@@ -234,7 +276,7 @@ namespace libhelperunittests {
             const size_t testiterations = 1000;
 
             for (size_t idx = 0; idx < testiterations; ++idx) {
-                const size_t nops = 10000;
+                const size_t nops = 1000;
 
                 int nodes_in_order[nops] = {0};
                 struct rb_tree high;
