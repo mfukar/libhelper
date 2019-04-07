@@ -273,7 +273,7 @@ namespace libhelperunittests {
 
             /* Kept low because running on other people's CPUs,
                and VSTS has limits. Feel free to stress yourself: */
-            const size_t testiterations = 1000;
+            const size_t testiterations = 100;
 
             for (size_t idx = 0; idx < testiterations; ++idx) {
                 const size_t nops = 1000;
