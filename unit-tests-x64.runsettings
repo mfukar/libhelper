@@ -12,15 +12,16 @@
 		Processor Architecture for AnyCPU Projects -->
     <TargetPlatform>x64</TargetPlatform>
 
-    <!-- Path to Test Adapters -->
+    <!-- Path to Test Adapters
     <TestAdaptersPaths>%SystemDrive%\Temp\testadapters</TestAdaptersPaths>
+	-->
 
     <!-- TestSessionTimeout was introduced in Visual Studio 2017 version 15.5 -->
     <!-- Specify timeout in milliseconds. A valid value should be greater than 0 -->
     <TestSessionTimeout>100000</TestSessionTimeout>
   </RunConfiguration>
 
-  <!-- Configurations for data collectors -->
+  <!-- Configurations for data collectors
   <DataCollectionRunSettings>
     <DataCollectors>
       <DataCollector friendlyName="Code Coverage" uri="datacollector://Microsoft/CodeCoverage/2.0" assemblyQualifiedName="Microsoft.VisualStudio.Coverage.DynamicCoverageDataCollector, Microsoft.VisualStudio.TraceCollector, Version=11.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
@@ -32,7 +33,6 @@
               </Exclude>
             </ModulePaths>
 
-            <!-- We recommend you do not change the following values: -->
             <UseVerifiableInstrumentation>True</UseVerifiableInstrumentation>
             <AllowLowIntegrityProcesses>True</AllowLowIntegrityProcesses>
             <CollectFromChildProcesses>True</CollectFromChildProcesses>
@@ -43,6 +43,7 @@
       </DataCollector>
     </DataCollectors>
   </DataCollectionRunSettings>
+  -->
 
   <!-- Parameters used by tests at runtime -->
   <TestRunParameters>
