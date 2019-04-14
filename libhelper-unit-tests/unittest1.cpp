@@ -2,9 +2,10 @@
 #include "CppUnitTest.h"
 
 #include "../libhelper/aho-corasick.h"
+#include "../libhelper/aqueue.h"
+#include "../libhelper/dlist.h"
 #include "../libhelper/overflow.h"
 #include "../libhelper/kmp.h"
-#include "../libhelper/aqueue.h"
 #include "../libhelper/rbtree.h"
 
 #include "test-material.h"
@@ -27,6 +28,78 @@ namespace libhelperunittests {
             Assert::IsTrue (checked_add_64 (b, a, &c));
             a = 0; b = INT64_MAX;
             Assert::IsFalse (checked_add_64 (a, b, &c));
+        }
+
+        TEST_METHOD (test_dlist_single_add_and_remove) {
+            DLIST_HEAD (the_head);
+
+            struct item { int id; struct dlist_node entry; };
+
+            auto one = ::new (struct item);
+
+            Assert::IsTrue (dlist_is_empty (&the_head));
+            dlist_append (&the_head, &one->entry);
+            Assert::IsFalse (dlist_is_empty (&the_head));
+            struct dlist_node *pos = nullptr;
+            size_t nelements = 0;
+            dlist_for_each (&the_head, pos) {
+                ++nelements;
+            }
+            Assert::IsTrue (nelements == 1);
+            dlist_delete (&one->entry);
+            delete one;
+            Assert::IsTrue (dlist_is_empty (&the_head));
+
+            /* Now prepend instead of append: */
+            one = ::new (struct item);
+
+            Assert::IsTrue (dlist_is_empty (&the_head));
+            dlist_append (&the_head, &one->entry);
+            Assert::IsFalse (dlist_is_empty (&the_head));
+            pos = nullptr;
+            nelements = 0;
+            dlist_for_each (&the_head, pos) {
+                ++nelements;
+            }
+            Assert::IsTrue (nelements == 1);
+            dlist_delete (&one->entry);
+            delete one;
+            Assert::IsTrue (dlist_is_empty (&the_head));
+        }
+
+        TEST_METHOD (test_dlist_ordered_insertions) {
+            /* This test will add nodes with IDs: 4, 2, 10 
+               to a list in that order, and verify the properties
+               of the list: */
+            struct item { int id; struct dlist_node entry;
+            item::item (int _id) : id (_id) { entry.next = nullptr; entry.prev = nullptr; };
+            };
+            DLIST_HEAD (the_head);
+            auto four = ::new (struct item){ 4 };
+            auto two = ::new (struct item){ 2 };
+            auto ten = ::new (struct item){ 10 };
+
+            dlist_append (&the_head, &four->entry);
+            dlist_append (&the_head, &two->entry);
+            dlist_append (&the_head, &ten->entry);
+
+            Assert::IsFalse (dlist_is_empty (&the_head));
+            struct dlist_node *pos = nullptr;
+            size_t nelements = 0;
+            dlist_for_each (&the_head, pos) {
+                ++nelements;
+            }
+            Assert::IsTrue (nelements == 3);
+
+            auto first = dlist_entry (dlist_get_next (&the_head), struct item, entry);
+            auto second = dlist_entry (dlist_get_next (dlist_get_next (&the_head)), struct item, entry);
+            auto third = dlist_entry (dlist_get_next (dlist_get_next (dlist_get_next (&the_head))), struct item, entry);
+            auto fourth = dlist_get_next (dlist_get_next (dlist_get_next (dlist_get_next (&the_head))));
+
+            Assert::IsTrue (first->id == four->id);
+            Assert::IsTrue (second->id == two->id);
+            Assert::IsTrue (third->id == ten->id);
+            Assert::IsTrue (&the_head == fourth);
         }
 
         TEST_METHOD (test_kmp_search_successful) {
@@ -177,7 +250,7 @@ namespace libhelperunittests {
             }
             ac_build_failure_function (&trie);
             auto preprocess_end = std::chrono::high_resolution_clock::now ();
-
+            auto preprocess_time = std::chrono::duration<double, std::milli> (preprocess_end - preprocess_start).count ();
             /* Micro: */
             size_t nmatches = 0;
             auto time_start = std::chrono::high_resolution_clock::now ();
@@ -188,8 +261,7 @@ namespace libhelperunittests {
             auto time_end = std::chrono::high_resolution_clock::now ();
             auto elapsed_time = std::chrono::duration<double, std::milli> (time_end - time_start).count ();
             std::stringstream out;
-            out << "Preprocessing time: "
-                << std::chrono::duration<double, std::milli> (preprocess_end - preprocess_start).count ()
+            out << "Preprocessing time: " << preprocess_time
                 << " ms" << std::endl
                 << "Matching time     : " << elapsed_time
                 << " ms for " << messages.size () / elapsed_time / 1000 << " Mmps" << std::endl;
