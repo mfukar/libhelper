@@ -141,9 +141,9 @@ struct ac_result ac_search (struct ac_trie *trie, const char *text, size_t ntext
         if (ac_output (state) != 0) {
             return (struct ac_result) {
                 .id = state->id,
-                    .start = i + 1 - ac_output (state),
-                    .end = i + 1,
-                    .last_state = state
+                .start = i + 1 - ac_output (state),
+                .end = i + 1,
+                .last_state = state
             };
         }
     }
@@ -168,9 +168,9 @@ struct ac_result ac_search_longest (struct ac_trie *trie, char *text, size_t nte
         if (ac_output (state) != 0) {
             result = (struct ac_result) {
                 .id = state->id,
-                    .start = i + 1 - ac_output (state),
-                    .end = i + 1,
-                    .last_state = state
+                .start = i + 1 - ac_output (state),
+                .end = i + 1,
+                .last_state = state
             };
         }
     }

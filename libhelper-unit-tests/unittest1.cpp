@@ -7,7 +7,8 @@
 #include "../libhelper/overflow.h"
 #include "../libhelper/kmp.h"
 #include "../libhelper/rbtree.h"
-
+#include "../libhelper/text.h"
+#include "../libhelper/sparseset.h"
 #include "test-material.h"
 
 using namespace Microsoft::VisualStudio::CppUnitTestFramework;
