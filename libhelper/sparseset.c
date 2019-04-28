@@ -1,17 +1,6 @@
 #include "sparseset.h"
 
 /**
- * The set, by default, is defined for unsigned int; simply define
- * this macro before including this header to change the element type.
- */
-struct sparse_set_t {
-    SPARSE_SET_ELEMENT_TYPE *dense;
-    SPARSE_SET_ELEMENT_TYPE *sparse;
-    size_t cardinality;
-    size_t capacity;
-};
-
-/**
  * Allocates and initializes a new sparse set, with the given capacity.
  */
 sparse_set_t sparse_set_init (size_t capacity) {
