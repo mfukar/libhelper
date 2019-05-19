@@ -7,14 +7,14 @@
     <ResultsDirectory>.\TestResults</ResultsDirectory>
 
     <!-- x86 or x64 -->
-	<!-- You can also change it from the top-level menu Test >
-		Test Settings >
-		Processor Architecture for AnyCPU Projects -->
+    <!-- You can also change it from the top-level menu Test >
+        Test Settings >
+        Processor Architecture for AnyCPU Projects -->
     <TargetPlatform>x64</TargetPlatform>
 
     <!-- Path to Test Adapters
     <TestAdaptersPaths>%SystemDrive%\Temp\testadapters</TestAdaptersPaths>
-	-->
+    -->
 
     <!-- TestSessionTimeout was introduced in Visual Studio 2017 version 15.5 -->
     <!-- Specify timeout in milliseconds. A valid value should be greater than 0 -->
@@ -47,8 +47,13 @@
 
   <!-- Adapter Specific sections -->
 
-  <!-- MSTest adapter
   <MSTest>
+      <Parallelize>
+          <Workers>8</Workers>
+          <Scope>ClassLevel</Scope>
+      </Parallelize>
+  </MSTest>
+  <!--
     <MapInconclusiveToFailed>True</MapInconclusiveToFailed>
     <CaptureTraceOutput>false</CaptureTraceOutput>
     <DeleteDeploymentDirectoryAfterTestRunIsComplete>False</DeleteDeploymentDirectoryAfterTestRunIsComplete>
@@ -56,7 +61,6 @@
     <AssemblyResolution>
       <Directory path="D:\whatisthis\bin\" includeSubDirectories="false"/>
     </AssemblyResolution>
-  </MSTest>
   -->
 
 </RunSettings>

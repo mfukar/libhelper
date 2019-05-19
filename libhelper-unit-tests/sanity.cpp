@@ -14,8 +14,7 @@
 using namespace Microsoft::VisualStudio::CppUnitTestFramework;
 
 namespace libhelperunittests {
-    TEST_CLASS (sanity_tests) {
-        const char *barn = "Loremipsumdolorsitamet,consecteturadipisicingelit,seddoeiusmodtemporincididuntutlaboreetdoloremagnaaliqua.Utenimadminimveniam,quisnostrudexercitationullamcolaborisnisiutaliquipexeacommodoconsequat.Duisauteiruredolorinreprehenderitinvoluptatevelitessecillumdoloreeufugiatnullapariatur.Excepteursintoccaecatcupidatatnonproident,suntinculpaquiofficiadeseruntmollitanimidestlaborum.";
+    TEST_CLASS (overflow_tests) {
     public:
         TEST_METHOD(test_32bit_signed_addition) {
             int32_t a = INT32_MIN, b = INT32_MIN;
@@ -30,7 +29,10 @@ namespace libhelperunittests {
             a = 0; b = INT64_MAX;
             Assert::IsFalse (checked_add_64 (a, b, &c));
         }
+    };
 
+    TEST_CLASS(dlist_tests) {
+public:
         TEST_METHOD (test_dlist_single_add_and_remove) {
             DLIST_HEAD (the_head);
 
@@ -102,7 +104,11 @@ namespace libhelperunittests {
             Assert::IsTrue (third->id == ten->id);
             Assert::IsTrue (&the_head == fourth);
         }
+    };
 
+    TEST_CLASS(kmp_tests) {
+        const char *barn = "Loremipsumdolorsitamet,consecteturadipisicingelit,seddoeiusmodtemporincididuntutlaboreetdoloremagnaaliqua.Utenimadminimveniam,quisnostrudexercitationullamcolaborisnisiutaliquipexeacommodoconsequat.Duisauteiruredolorinreprehenderitinvoluptatevelitessecillumdoloreeufugiatnullapariatur.Excepteursintoccaecatcupidatatnonproident,suntinculpaquiofficiadeseruntmollitanimidestlaborum.";
+public:
         TEST_METHOD (test_kmp_search_successful) {
             const char test_success[] = "tempor";
 
@@ -127,7 +133,10 @@ namespace libhelperunittests {
             kmp_ff (test_fail, ff2, ARRAY_SIZE(ff2));
             Assert::IsTrue (kmp (barn, ::strlen (barn), test_fail, ::strlen (test_fail), ff2) == -1);
         }
+    };
 
+    TEST_CLASS (ac_trie_tests) {
+    public:
         TEST_METHOD (test_trie_structure) {
             std::ifstream ifs ("test-tags.txt");
             std::vector<std::string> tags;

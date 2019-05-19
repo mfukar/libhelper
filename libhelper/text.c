@@ -1,5 +1,6 @@
 #include "text.h"
 #include <ctype.h>
+#include <string.h>
 
 bool strip (char * dst, const char * src, size_t ndst) {
     size_t nleading = 0, ntrailing = 0;

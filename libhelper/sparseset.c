@@ -1,5 +1,7 @@
 #include "sparseset.h"
 
+#include <string.h>
+
 /**
  * Allocates and initializes a new sparse set, with the given capacity.
  */
