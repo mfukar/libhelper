@@ -16,18 +16,48 @@ using namespace Microsoft::VisualStudio::CppUnitTestFramework;
 namespace libhelperunittests {
     TEST_CLASS (overflow_tests) {
     public:
-        TEST_METHOD(test_32bit_signed_addition) {
-            int32_t a = INT32_MIN, b = INT32_MIN;
+        TEST_METHOD (test_checked_32bit_addition_edgecases) {
             int32_t c = 0;
-            Assert::IsTrue (checked_add_32 (a, b, &c));
+            int32_t a = 0, b = INT32_MAX;
+            Assert::IsTrue (false == checked_add_32 (a, b, &c));
+            a = 1; b = INT32_MAX;
+            Assert::IsTrue (true == checked_add_32 (a, b, &c));
+            a = INT32_MAX - 1; b = INT32_MAX;
+            Assert::IsTrue (true == checked_add_32 (a, b, &c));
+            ++a; b = INT32_MAX;
+            Assert::IsTrue (true == checked_add_32 (a, b, &c));
+            a = 0; b = INT32_MIN;
+            Assert::IsTrue (false == checked_add_32 (a, b, &c));
+            a = -1; b = INT32_MIN;
+            Assert::IsTrue (true == checked_add_32 (a, b, &c));
+            a = INT32_MIN + 1; b = INT32_MIN;
+            Assert::IsTrue (true == checked_add_32 (a, b, &c));
+            --a; b = INT32_MIN;
+            Assert::IsTrue (true == checked_add_32 (a, b, &c));
+            a = INT32_MAX; b = INT32_MIN;
+            Assert::IsTrue (false == checked_add_32 (a, b, &c));
         }
 
-        TEST_METHOD (test_64bit_signed_addition) {
-            int64_t a = 1, b = INT64_MAX;
+        TEST_METHOD (test_checked_64bit_addition_edgecases) {
             int64_t c = 0;
-            Assert::IsTrue (checked_add_64 (b, a, &c));
-            a = 0; b = INT64_MAX;
-            Assert::IsFalse (checked_add_64 (a, b, &c));
+            int64_t a = 0, b = INT64_MAX;
+            Assert::IsTrue (false == checked_add_64 (a, b, &c));
+            a = 1; b = INT64_MAX;
+            Assert::IsTrue (true == checked_add_64 (a, b, &c));
+            a = INT64_MAX - 1; b = INT64_MAX;
+            Assert::IsTrue (true == checked_add_64 (a, b, &c));
+            ++a; b = INT64_MAX;
+            Assert::IsTrue (true == checked_add_64 (a, b, &c));
+            a = 0; b = INT64_MIN;
+            Assert::IsTrue (false == checked_add_64 (a, b, &c));
+            a = -1; b = INT64_MIN;
+            Assert::IsTrue (true == checked_add_64 (a, b, &c));
+            a = INT64_MIN + 1; b = INT64_MIN;
+            Assert::IsTrue (true == checked_add_64 (a, b, &c));
+            --a; b = INT64_MIN;
+            Assert::IsTrue (true == checked_add_64 (a, b, &c));
+            a = INT64_MAX; b = INT64_MIN;
+            Assert::IsTrue (false == checked_add_64 (a, b, &c));
         }
     };
 
