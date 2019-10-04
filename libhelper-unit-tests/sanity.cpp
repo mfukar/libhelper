@@ -69,70 +69,80 @@ public:
             struct item { int id; struct dlist_node entry; };
 
             auto one = ::new (struct item);
-
+            /* One insertion makes the list non-empty: */
             Assert::IsTrue (dlist_is_empty (&the_head));
             dlist_append (&the_head, &one->entry);
             Assert::IsFalse (dlist_is_empty (&the_head));
+            /* The list size is equal to 1: */
             struct dlist_node *pos = nullptr;
             size_t nelements = 0;
             dlist_for_each (&the_head, pos) {
                 ++nelements;
             }
             Assert::IsTrue (nelements == 1);
+            /* One deletion makes the list empty: */
             dlist_delete (&one->entry);
             delete one;
             Assert::IsTrue (dlist_is_empty (&the_head));
 
             /* Now prepend instead of append: */
             one = ::new (struct item);
-
+            /* One insertion makes the list non-empty: */
             Assert::IsTrue (dlist_is_empty (&the_head));
-            dlist_append (&the_head, &one->entry);
+            dlist_prepend (&the_head, &one->entry);
             Assert::IsFalse (dlist_is_empty (&the_head));
+            /* The list size is equal to 1: */
             pos = nullptr;
             nelements = 0;
             dlist_for_each (&the_head, pos) {
                 ++nelements;
             }
             Assert::IsTrue (nelements == 1);
+            /* One deletion makes the list empty: */
             dlist_delete (&one->entry);
             delete one;
             Assert::IsTrue (dlist_is_empty (&the_head));
         }
 
         TEST_METHOD (test_dlist_ordered_insertions) {
-            /* This test will add nodes with IDs: 4, 2, 10 
-               to a list in that order, and verify the properties
-               of the list: */
+            /* This test will add nodes to a list in order,
+               and verify the properties of the list: */
+            std::random_device rd;
+            auto seed = rd ();
+
+            std::minstd_rand generator (seed);
+            std::uniform_int_distribution<int> id_dist (0, INT_MAX);
+
             struct item { int id; struct dlist_node entry;
-            item::item (int _id) : id (_id) { entry.next = nullptr; entry.prev = nullptr; };
+                item::item (int _id) : id (_id) { entry.next = nullptr; entry.prev = nullptr; };
             };
             DLIST_HEAD (the_head);
-            auto four = ::new (struct item){ 4 };
-            auto two = ::new (struct item){ 2 };
-            auto ten = ::new (struct item){ 10 };
+            struct dlist_node *pos = nullptr; /* Temporary for looping */
 
-            dlist_append (&the_head, &four->entry);
-            dlist_append (&the_head, &two->entry);
-            dlist_append (&the_head, &ten->entry);
+            std::vector<int> ids(2000);
+            std::generate (std::begin (ids), std::end (ids),
+                           [&id_dist, &generator]() { return id_dist (generator); });
 
-            Assert::IsFalse (dlist_is_empty (&the_head));
-            struct dlist_node *pos = nullptr;
-            size_t nelements = 0;
-            dlist_for_each (&the_head, pos) {
-                ++nelements;
+            size_t nelements_expected = 1;
+            for (auto id : ids) {
+                auto temp = ::new(struct item){ id };
+                dlist_append (&the_head, &temp->entry);
+                Assert::IsFalse (dlist_is_empty (&the_head));
+                
+                size_t nelements = 0;
+                dlist_for_each (&the_head, pos) {
+                    ++nelements;
+                }
+                Assert::IsTrue (nelements == nelements_expected);
+                ++nelements_expected;
             }
-            Assert::IsTrue (nelements == 3);
 
-            auto first = dlist_entry (dlist_get_next (&the_head), struct item, entry);
-            auto second = dlist_entry (dlist_get_next (dlist_get_next (&the_head)), struct item, entry);
-            auto third = dlist_entry (dlist_get_next (dlist_get_next (dlist_get_next (&the_head))), struct item, entry);
-            auto fourth = dlist_get_next (dlist_get_next (dlist_get_next (dlist_get_next (&the_head))));
-
-            Assert::IsTrue (first->id == four->id);
-            Assert::IsTrue (second->id == two->id);
-            Assert::IsTrue (third->id == ten->id);
-            Assert::IsTrue (&the_head == fourth);
+            /* Now examine the order of insertions: */
+            size_t idx = 0;
+            dlist_for_each (&the_head, pos) {
+                auto element = dlist_entry (pos, struct item, entry)->id;
+                Assert::IsTrue (element == ids[idx++]);
+            }
         }
     };
 
@@ -379,7 +389,7 @@ public:
 
             assert_output << "Seed: " << seed << std::endl;
 
-            std::mt19937 generator(seed);
+            std::minstd_rand generator(seed);
             std::bernoulli_distribution ops_dist(0.75); /* .75 of all ops to be rb_insert */
             std::uniform_int_distribution<int> data_dist(0, INT_MAX);
 

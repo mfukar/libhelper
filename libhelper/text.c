@@ -11,7 +11,7 @@ bool strip (char * dst, const char * src, size_t ndst) {
     for (const char *tmp = src; *tmp != 0 && isblank (*tmp); ++tmp) {
         ++nleading;
     }
-    
+
     /* Don't bother counting trailing if the entire string is whitespace: */
     if (nleading == srclen) {
         return false;

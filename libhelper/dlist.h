@@ -136,13 +136,19 @@ static inline void dlist_merge(struct dlist_node *head, struct dlist_node *list)
          (pos) != (head); \
          (pos) = (pos)->next)
 
-#define dlist_for_each_safe(head, pos, tmp) \
-    for ((pos) = (head)->next, (tmp) = (pos)->next; \
-         (pos) != (head); \
-         (pos) = (tmp), (tmp) = (tmp)->next)
+/**
+ * Iterate over a dlist. Safe against mutation during iteration.
+ * @head:       the head of the dlist
+ * @cursor:     a pointer to the struct dlist, to use for mutation of the list
+ * @constant:   a pointer to a second struct dlist, to use as a loop cursor
+ */
+#define dlist_for_each_safe(head, cursor, constant) \
+    for ((cursor) = (head)->next, (constant) = (cursor)->next; \
+         (cursor) != (head); \
+         (cursor) = (constant), (constant) = (constant)->next)
 
 /**
- * Iterate over a dlist of given type. Not safe against mutation during iteration.
+ * Iterate over the elements of a dlist, of given type. Not safe against mutation during iteration.
  * @head:       the head of the dlist
  * @pos:        a pointer to the element type, to use as a loop cursor
  * @member:     the name of the `struct dlist *` within the element
@@ -153,7 +159,7 @@ static inline void dlist_merge(struct dlist_node *head, struct dlist_node *list)
          pos = dlist_entry(pos->member.next, typeof(*pos), member))
 
  /**
-  * Iterate over a dlist of given type, backwards. Not safe against mutation during iteration.
+  * Iterate over the elements of a dlist, of given type, backwards. Not safe against mutation during iteration.
   * @head:       the head of the dlist
   * @pos:        a pointer to the element type, to use as a loop cursor
   * @member:     the name of the `struct dlist *` within the element
@@ -167,29 +173,29 @@ static inline void dlist_merge(struct dlist_node *head, struct dlist_node *list)
    * Iterate over a dlist of given type. It is safe to delete the element under the
    * cursor when using this macro.
    * @head: the head of the dlist
-   * @pos: a pointer to the element type, to use as a loop cursor
-   * @tmp: a pointer to the element type, to use as scratch
+   * @cursor:   a pointer to the element type, to use for mutation of the list
+   * @constant: a pointer to the element type, to use as a loop cursor
    * @member: the name of the `struct dlist *` within the element
    */
-#define dlist_for_each_entry_safe(head, pos, tmp, member) \
-    for (pos = dlist_entry((head)->next, typeof(*pos), member), \
-           n = dlist_entry(pos->member.next, typeof(*pos), member); \
-        &pos->member != (head); \
-        pos = n, n = dlist_entry(n->member.next, typeof(*n), member))
+#define dlist_for_each_entry_safe(head, cursor, constant, member) \
+    for (cursor = dlist_entry((head)->next, typeof(*cursor), member), \
+         constant = dlist_entry(cursor->member.next, typeof(*cursor), member); \
+        &cursor->member != (head); \
+        cursor = constant, constant = dlist_entry(constant->member.next, typeof(*constant), member))
 
    /**
     * Iterate over a dlist of given type, backwards. It is safe to delete the
     * element under the cursor when using this macro.
     * @head: the head of the dlist
-    * @pos: a pointer to the element type, to use as a loop cursor
-    * @tmp: a pointer to the element type, to use as scratch
+    * @cursor: a pointer to the element type, to use for mutation of the list
+    * @constant: a pointer to the element type, to use as a loop cursor
     * @member: the name of the `struct dlist *` within the element
     */
-#define dlist_for_each_previous_entry_safe(head, pos, tmp, member) \
-    for (pos = dlist_entry((head)->prev, typeof(*pos), member), \
-           n = dlist_entry(pos->member.prev, typeof(*pos), member); \
-        &pos->member != (head); \
-        pos = n, n = dlist_entry(n->member.prev, typeof(*n), member))
+#define dlist_for_each_previous_entry_safe(head, cursor, constant, member) \
+    for (cursor = dlist_entry((head)->prev, typeof(*cursor), member), \
+         constant = dlist_entry(cursor->member.prev, typeof(*cursor), member); \
+        &cursor->member != (head); \
+        cursor = constant, constant = dlist_entry(constant->member.prev, typeof(*constant), member))
 
 #ifdef __cplusplus
 }
