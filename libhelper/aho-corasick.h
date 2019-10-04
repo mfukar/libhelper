@@ -35,6 +35,10 @@ struct ac_trie {
  */
 bool ac_trie_init (struct ac_trie *trie);
 
+/**
+ * Insert a `string` into the `trie`.
+ * Returns `true` if insertion was successful, or `false` on error.
+ */
 bool ac_trie_insert (struct ac_trie *trie, const char *string);
 
 /**
