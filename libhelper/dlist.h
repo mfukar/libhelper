@@ -46,15 +46,24 @@ static inline void dlist_init (struct dlist_node *list) {
 }
 
 /**
- * dlist_entry - get the element which contains this dlist node
- * @ptr:        a pointer to the `struct dlist`
- * @type:       the type of the struct this is embedded in
- * @member:     the name of the `struct dlist *` field within the structure
+ * Get the element which contains this dlist_node.
+ * @ptr: a pointer to the `struct dlist_node`
+ * @type: the type of the object containing `ptr`
+ * @member_name: the name of the member contained in the object needed
  */
-#define dlist_entry(ptr, type, member) container_of(ptr, type, member)
+#define dlist_entry(ptr, type, member_name) container_of(ptr, type, member_name)
 
-#define dlist_get_next(ptr) (ptr)->next
-#define dlist_get_prev(ptr) (ptr)->prev
+/**
+ * Get the node after the specified dlist_node.
+ * @ptr: a pointer to the `struct dlist_node`
+ */
+#define dlist_get_next(ptr) ((ptr)->next)
+
+/**
+ * Get the node before the specified dlist_node.
+ * @ptr: a pointer to the `struct dlist_node`
+ */
+#define dlist_get_prev(ptr) ((ptr)->prev)
 
 static inline bool dlist_is_empty(struct dlist_node *list) {
     return list->next == list;

@@ -9,6 +9,7 @@
 #include "../libhelper/rbtree.h"
 #include "../libhelper/text.h"
 #include "../libhelper/sparseset.h"
+#include "../libhelper/dequeue.h"
 #include "test-material.h"
 
 using namespace Microsoft::VisualStudio::CppUnitTestFramework;
@@ -119,7 +120,7 @@ public:
             DLIST_HEAD (the_head);
             struct dlist_node *pos = nullptr; /* Temporary for looping */
 
-            std::vector<int> ids(2000);
+            std::vector<int> ids(4000);
             std::generate (std::begin (ids), std::end (ids),
                            [&id_dist, &generator]() { return id_dist (generator); });
 
@@ -137,7 +138,8 @@ public:
                 ++nelements_expected;
             }
 
-            /* Now examine the order of insertions: */
+            /* Iterating the list forward must show
+             * all elements be in order of insertion: */
             size_t idx = 0;
             dlist_for_each (&the_head, pos) {
                 auto element = dlist_entry (pos, struct item, entry)->id;
@@ -172,6 +174,114 @@ public:
 
             kmp_ff (test_fail, ff2, ARRAY_SIZE(ff2));
             Assert::IsTrue (kmp (barn, ::strlen (barn), test_fail, ::strlen (test_fail), ff2) == -1);
+        }
+    };
+
+    TEST_CLASS (double_ended_queue_tests) {
+    public:
+        TEST_METHOD (test_dlist_api_equivalence) {
+            struct item {
+                int id; struct dlist_node entry;
+                item::item (int _id) : id (_id) { entry.next = nullptr; entry.prev = nullptr; };
+            };
+            dequeue_alloc (q);
+            dequeue_init (&q);
+            auto temp = ::new(struct item){ 2 };
+            dlist_append (&q, &temp->entry);
+            /* Queue is not empty: */
+            Assert::IsFalse (dlist_is_empty (&q));
+            /* Queue's first element is the only element: */
+            Assert::IsTrue (dequeue_front (&q) == &temp->entry);
+        }
+
+        TEST_METHOD (test_enqueue) {
+            struct item {
+                int id; struct dlist_node entry;
+                item::item (int _id) : id (_id) { entry.next = nullptr; entry.prev = nullptr; };
+            };
+            dequeue_alloc (q);
+            dequeue_init (&q);
+            auto temp = ::new(struct item){ 3 };
+            dequeue_enqueue (&q, &temp->entry);
+            /* Queue is not empty: */
+            Assert::IsFalse (dequeue_is_empty (&q));
+            /* Queue's first element is the only element: */
+            Assert::IsTrue (dequeue_front (&q) == &temp->entry);
+        }
+
+        TEST_METHOD (test_fifo_order) {
+            struct item {
+                int id; struct dlist_node entry;
+                item::item (int _id) : id (_id) { entry.next = nullptr; entry.prev = nullptr; };
+            };
+            dequeue_alloc (q);
+            dequeue_init (&q);
+            auto one = ::new(struct item){ 1 };
+            auto two = ::new(struct item){ 2 };
+            dequeue_enqueue (&q, &one->entry);
+            /* Queue is not empty: */
+            Assert::IsFalse (dequeue_is_empty (&q));
+            dequeue_enqueue (&q, &two->entry);
+            /* Queue is not empty: */
+            Assert::IsFalse (dequeue_is_empty (&q));
+
+            /* One was added before two, therefore it is the first out: */
+            Assert::IsTrue (dlist_is_last (&one->entry, &q));
+            Assert::IsTrue (dequeue_front (&q) == &one->entry);
+            Assert::IsTrue (dequeue_front (dequeue_front (&q)) == &two->entry);
+
+            /* Deleting one makes two the first, last, and only element: */
+            dlist_delete (dequeue_front (&q));
+            delete one;
+            Assert::IsTrue (dlist_is_last (&two->entry, &q));
+            Assert::IsTrue (dequeue_front (&q) == &two->entry);
+        }
+
+        TEST_METHOD (test_dequeue_ordered_insertions) {
+            /* This test will add nodes to a list in order,
+               and verify the properties of the list: */
+            std::random_device rd;
+            auto seed = rd ();
+
+            std::minstd_rand generator (seed);
+            std::uniform_int_distribution<int> id_dist (0, INT_MAX);
+
+            struct item {
+                int id; struct dlist_node entry;
+                item::item (int _id) : id (_id) { entry.next = nullptr; entry.prev = nullptr; };
+            };
+            dequeue_alloc (the_head);
+            dequeue_init (&the_head);
+            struct dlist_node *pos = nullptr; /* Temporary for looping */
+
+            std::vector<int> ids (6000);
+            std::generate (std::begin (ids), std::end (ids),
+                           [&id_dist, &generator]() { return id_dist (generator); });
+
+            size_t nelements_expected = 1;
+            for (auto id : ids) {
+                auto temp = ::new(struct item){ id };
+                dequeue_enqueue (&the_head, &temp->entry);
+                Assert::IsFalse (dequeue_is_empty (&the_head));
+
+                size_t nelements = 0;
+                dlist_for_each (&the_head, pos) {
+                    ++nelements;
+                }
+                Assert::IsTrue (nelements == nelements_expected);
+                ++nelements_expected;
+            }
+
+            /* All elements must be peeked in FIFO order: */
+            size_t idx = 0;
+            while (!dequeue_is_empty (&the_head)) {
+                auto cursor = dequeue_front (&the_head);
+                auto element = dlist_entry (cursor, struct item, entry)->id;
+                Assert::IsTrue (element == ids[idx++]);
+                dlist_delete (cursor);
+            }
+            /* And the queue must be empty: */
+            Assert::IsTrue (dequeue_is_empty (&the_head));
         }
     };
 

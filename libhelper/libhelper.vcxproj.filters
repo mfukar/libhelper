@@ -66,6 +66,9 @@
     <ClInclude Include="sparseset.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="dequeue.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="kmp.c">

@@ -66,12 +66,13 @@ bool ac_trie_insert (struct ac_trie *trie, const char *string) {
  * You can cross-ref the comments with the paper.
  */
 bool ac_build_failure_function (struct ac_trie *trie) {
-    int start_index = 0, end_index = 0;
+    /* Allocate some space to keep nodes for a BFS traversal: */
     struct ac_state **queue = malloc(sizeof *queue * trie->nstates);
     if (!queue) {
         return false;
     }
-    SGLIB_QUEUE_INIT (struct ac_state *, queue, start_index, end_index);
+    int start_index = 0, end_index = 0;
+    AQUEUE_INIT (queue, start_index, end_index);
 
     trie->root->failure = trie->root;
 
@@ -82,14 +83,14 @@ bool ac_build_failure_function (struct ac_trie *trie) {
             continue;
         }
         /* The transitions to non-NULL nodes are going to be used for BFS: */
-        SGLIB_QUEUE_ADD (struct ac_state *, queue, ac_next (trie->root, a), start_index, end_index, trie->nstates);
+        AQUEUE_ENQUEUE (queue, ac_next (trie->root, a), start_index, end_index, trie->nstates);
 
         /* f(s) = 0 for all states of depth 1 */
         ac_next(trie->root, a)->failure = trie->root;
     }
  
-    while (!SGLIB_QUEUE_IS_EMPTY (struct ac_state *, queue, start_index, end_index)) {
-        struct ac_state *r = SGLIB_QUEUE_FIRST_ELEMENT (struct ac_state *, queue, start_index, end_index);
+    while (!AQUEUE_IS_EMPTY (queue, start_index, end_index)) {
+        struct ac_state *r = AQUEUE_FRONT_ELEMENT (queue, start_index, end_index);
 
         for (size_t a = 0; a < ARRAY_SIZE (r->gotofunc); ++a) {
             if (ac_next (r, a) == NULL) {
@@ -99,7 +100,7 @@ bool ac_build_failure_function (struct ac_trie *trie) {
             /* For each a, such that g(r, a) = s */
             struct ac_state *s = ac_next (r, a);
             /* Enqueue s for the BFS: */
-            SGLIB_QUEUE_ADD (struct ac_state *, queue, s, start_index, end_index, trie->nstates);
+            AQUEUE_ENQUEUE (queue, s, start_index, end_index, trie->nstates);
 
             /* Set state = f(r) */
             struct ac_state *state = ac_fail (r);
@@ -112,7 +113,7 @@ bool ac_build_failure_function (struct ac_trie *trie) {
             ac_fail(s) = ac_next (state, a);
         }
 
-        SGLIB_QUEUE_DELETE (struct ac_state *, queue, start_index, end_index, trie->nstates);
+        AQUEUE_DEQUEUE (queue, start_index, end_index, trie->nstates);
     }
 
     free (queue);

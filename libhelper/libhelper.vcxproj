@@ -163,6 +163,7 @@
     <ClInclude Include="aho-corasick.h" />
     <ClInclude Include="assertions.h" />
     <ClInclude Include="bytes.h" />
+    <ClInclude Include="dequeue.h" />
     <ClInclude Include="dlist.h" />
     <ClInclude Include="kmp.h" />
     <ClInclude Include="memtok.h" />
